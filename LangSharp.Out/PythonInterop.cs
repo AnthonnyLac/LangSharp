@@ -88,7 +88,7 @@ namespace LangSharp.Out
 
         private string GetPythonBasePath()
         {
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"packages\python\3.11.7\tools");
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"py-dll\python\3.11.7\tools");
         }
 
         private void SetPythonPath()
