@@ -1,17 +1,15 @@
 ﻿using Python.Runtime;
-using System.IO;
-using System.Reflection;
 
 namespace LangSharp.Out
 {
     public class PythonInterop  : IDisposable
     {
+
         private static IntPtr threadState;
 
         public PythonInterop()
         {
-            // Chama o método para configurar o caminho do Python
-
+          
         }
 
 
@@ -72,6 +70,50 @@ namespace LangSharp.Out
             }
         }
 
+        public void InstallPythonPackage(string packageName)
+        {
+            // Define o caminho para o ambiente virtual
+            string venvPath = GetVenvPath();
+
+            // Verifica se o ambiente virtual existe
+            if (!Directory.Exists(venvPath))
+            {
+                Console.WriteLine("O ambiente virtual não existe. Crie um primeiro.");
+                return;
+            }
+
+            using (Py.GIL()) // GIL - Global Interpreter Lock
+            {
+                dynamic subprocess = Py.Import("subprocess");
+
+                // Caminho para o executável do Python dentro do venv
+                string pythonExecutable = Path.Combine(venvPath, "Scripts", "python.exe");
+
+                // Comando para instalar o pacote no ambiente virtual
+                subprocess.check_call(new[] { pythonExecutable, "-m", "pip", "install", packageName });
+            }
+        }
+
+        public void CreateVirtualEnvironment()
+        {
+            // Define o caminho para o ambiente virtual
+            string venvPath = GetVenvPath();
+
+            // Cria o ambiente virtual se ele não existir
+            if (!Directory.Exists(venvPath))
+            {
+                using (Py.GIL()) // GIL - Global Interpreter Lock
+                {
+                    dynamic subprocess = Py.Import("subprocess");
+                    // Executa o comando para criar o ambiente virtual
+                    subprocess.check_call(new[] { "python", "-m", "venv", venvPath });
+                }
+            }
+            else
+            {
+                Console.WriteLine("O ambiente virtual já existe: " + venvPath);
+            }
+        }
 
         //Será só isso pra evitar vazamento de memoria?
         public void Dispose()
@@ -91,6 +133,33 @@ namespace LangSharp.Out
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"py-dll\python\3.11.7\tools");
         }
 
+        private string GetVenvPath()
+        {
+            var currentDirectory = GetRootPath();
+
+            return Path.Combine(currentDirectory, "myenv");
+        }
+
+
+        private string GetRootPath()
+        {
+            var currentDirectory = Directory.GetCurrentDirectory();
+
+            // Encontra o índice da última ocorrência de "LangSharp.Out"
+            var index = currentDirectory.IndexOf("LangSharp.Out");
+
+            // Se a substring foi encontrada, retorna a parte até e incluindo "LangSharp.Out"
+            if (index != -1)
+            {
+                // Adiciona o comprimento de "LangSharp.Out" para incluir na substring
+                return currentDirectory.Substring(0, index + "LangSharp.Out".Length);
+            }
+
+            // Retorna o diretório atual se "LangSharp.Out" não foi encontrado
+            return currentDirectory;
+        }
+
+
         private void SetPythonPath()
         {
             var pythonHome = GetPythonBasePath();
@@ -103,6 +172,9 @@ namespace LangSharp.Out
                 // Especificando a DLL do Python
                 string pythonDllPath = Path.Combine(pythonHome, "python311.dll"); // Ajuste conforme sua versão do Python
                 Environment.SetEnvironmentVariable("PYTHONNET_PYDLL", pythonDllPath);
+                Environment.SetEnvironmentVariable("PYTHONHOME", pythonHome);
+                Environment.SetEnvironmentVariable("PYTHONPATH", sitePackagesPath);
+
             }
             else
             {

@@ -4,8 +4,10 @@
     {
         static void Main(string[] args)
         {
+
             // Cria uma instância da classe PythonInterop
             using var pythonInterop = new PythonInterop();
+
 
             try
             {
@@ -27,6 +29,10 @@
 
                 // Executa o código Python
                 pythonInterop.ExecutePythonScript(scriptName, moduleName, methodName, argsPython);
+
+                //Teste
+                pythonInterop.CreateVirtualEnvironment();
+                pythonInterop.InstallPythonPackage("langchain");
 
             }
             catch (Exception ex)
