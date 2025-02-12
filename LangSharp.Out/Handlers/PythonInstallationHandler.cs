@@ -21,7 +21,7 @@ namespace LangSharp.Out.Handlers
         public string Handle(string command)
         {
             // TODO: Lógica para verificar a instalação do Python
-            bool pythonInstalled = true; // Simulação
+            bool pythonInstalled = true; 
             if (!pythonInstalled)
             {
                 return "Erro: Python não está instalado.";

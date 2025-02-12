@@ -21,10 +21,12 @@ namespace LangSharp.Out.Core
             var envCheck = new EnvironmentVariablesHandler();
             var setupCheck = new PythonSetupHandler();
             var langChainCheck = new LangChainHandler();
+            var resultHandler = new ResultHandler();
 
             pythonCheck.SetNext(envCheck);
             envCheck.SetNext(setupCheck);
             setupCheck.SetNext(langChainCheck);
+            langChainCheck.SetNext(resultHandler);
 
             _handlerChain = pythonCheck;
         }

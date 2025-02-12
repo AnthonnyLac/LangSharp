@@ -21,7 +21,7 @@ namespace LangSharp.Out.Handlers
         public string Handle(string command)
         {
             // TODO: Lógica para verificar variáveis de ambiente
-            bool envVarsSet = true; // Simulação
+            bool envVarsSet = true;
             if (!envVarsSet)
             {
                 return "Erro: Variáveis de ambiente do Python.NET não configuradas corretamente.";
