@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LangSharp.Out.Utils;
 
 namespace LangSharp.Out.Handlers
 {
@@ -20,9 +21,7 @@ namespace LangSharp.Out.Handlers
 
         public string Handle(string command)
         {
-            // TODO: Lógica para verificar a instalação do Python
-            bool pythonInstalled = true; 
-            if (!pythonInstalled)
+            if (!EnvironmentUtils.IsPythonInstalled())
             {
                 return "Erro: Python não está instalado.";
             }

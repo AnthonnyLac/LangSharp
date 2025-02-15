@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LangSharp.Out.Services;
 
 namespace LangSharp.Out.Handlers
 {
@@ -20,11 +21,10 @@ namespace LangSharp.Out.Handlers
 
         public string Handle(string command)
         {
-            // TODO: Lógica para chamar o LangChain via Python.NET
-            bool langChainSuccess = true; 
-            if (!langChainSuccess)
+            string result = PythonService.ProcessLLMRequest(command);
+            if (result.StartsWith("Erro"))
             {
-                return "Erro: Falha ao executar LangChain.";
+                return result;
             }
 
             return _nextHandler?.Handle(command) ?? "LangChain executado com sucesso.";
