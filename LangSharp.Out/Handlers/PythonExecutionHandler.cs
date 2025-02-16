@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LangSharp.Out.Services;
-using LangSharp.Out.Utils;
 
 namespace LangSharp.Out.Handlers
 {
     /// <summary>
-    /// Valida as variáveis de ambiente necessárias para o Python.NET.
+    /// Executa comandos Python utilizando o Python.NET.
     /// </summary>
-    public class EnvironmentVariablesHandler : IHandler
+    public class PythonExecutionHandler : IHandler
     {
         private IHandler _nextHandler;
 
@@ -22,13 +21,13 @@ namespace LangSharp.Out.Handlers
 
         public string Handle(string command)
         {
-            bool envVarsSet = PythonService.ArePythonNetVariablesSet();
-            if (!envVarsSet)
+            string result = PythonService.ExecuteCommand(command);
+            if (result.StartsWith("Erro"))
             {
-                return "Erro: Variáveis de ambiente do Python.NET não configuradas corretamente.";
+                return result;
             }
 
-            return _nextHandler?.Handle(command) ?? "Variáveis de ambiente verificadas.";
+            return _nextHandler?.Handle(command) ?? result;
         }
     }
 }

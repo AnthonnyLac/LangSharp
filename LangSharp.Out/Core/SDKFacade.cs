@@ -16,24 +16,31 @@ namespace LangSharp.Out.Core
 
         public SDKFacade()
         {
-            // Configurando a cadeia de responsabilidade
             var pythonCheck = new PythonInstallationHandler();
             var envCheck = new EnvironmentVariablesHandler();
             var setupCheck = new PythonSetupHandler();
-            var langChainCheck = new LangChainHandler();
+            var executionHandler = new PythonExecutionHandler();
             var resultHandler = new ResultHandler();
 
             pythonCheck.SetNext(envCheck);
             envCheck.SetNext(setupCheck);
-            setupCheck.SetNext(langChainCheck);
-            langChainCheck.SetNext(resultHandler);
+            setupCheck.SetNext(executionHandler);
+            executionHandler.SetNext(resultHandler);
 
             _handlerChain = pythonCheck;
         }
 
         public string ExecutePythonCommand(string command)
         {
-            return _handlerChain.Handle(command);
+            try
+            {
+                return _handlerChain.Handle(command);
+            }
+            catch (Exception ex)
+            {
+                // Log ou tratamento de erro
+                return $"Erro ao executar comando Python: {ex.Message}";
+            }
         }
     }
 }

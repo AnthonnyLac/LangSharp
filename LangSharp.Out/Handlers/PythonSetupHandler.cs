@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LangSharp.Out.Services;
 
 namespace LangSharp.Out.Handlers
 {
@@ -20,14 +21,15 @@ namespace LangSharp.Out.Handlers
 
         public string Handle(string command)
         {
-            // TODO: Lógica para configurar o ambiente Python
-            bool setupComplete = true;
-            if (!setupComplete)
+            try
             {
-                return "Erro: Falha ao configurar o ambiente Python.";
+                PythonService.InitializePython();
+                return _nextHandler?.Handle(command) ?? "Ambiente Python configurado.";
             }
-
-            return _nextHandler?.Handle(command) ?? "Ambiente Python configurado.";
+            catch (Exception ex)
+            {
+                return $"Erro ao configurar ambiente Python: {ex.Message}";
+            }
         }
     }
 }
