@@ -1,7 +1,8 @@
-﻿using System;
-using System.Diagnostics;
+﻿using LangSharp.Out.Consts;
+using LangSharp.Out.Models.Base;
 using LangSharp.Out.Utils;
 using Python.Runtime;
+using System.Diagnostics;
 
 namespace LangSharp.Out.Services
 {
@@ -13,19 +14,28 @@ namespace LangSharp.Out.Services
     {
         public static void InitializePython()
         {
-            if (!PythonEngine.IsInitialized)
-            {
-                string pythonHome = Environment.GetEnvironmentVariable("PYTHONHOME") ?? @"C:\Python39";
-                string pythonDll = GetPythonDllPath(pythonHome);
+            if (PythonEngine.IsInitialized)
+                return;
 
-                if (!System.IO.File.Exists(pythonDll))
-                {
-                    throw new FileNotFoundException($"Erro: Python DLL não encontrada em {pythonDll}. Verifique a instalação do Python.");
-                }
+            PythonEngine.Initialize();
+            var threadState = PythonEngine.BeginAllowThreads();
 
-                Runtime.PythonDLL = pythonDll;
-                PythonEngine.Initialize();
-            }
+            PythonThread.SetThreadState(threadState);
+        }
+
+        public static void SetEnvironmentPath()
+        {
+            var pythonHome = EnvironmentUtils.GetPythonBasePath();
+
+            if (string.IsNullOrEmpty(pythonHome) || !Directory.Exists(pythonHome))
+                throw new DirectoryNotFoundException($"O diretório do Python não foi encontrado: {pythonHome}");
+
+            var sitePackagesPath = EnvironmentUtils.GetSitePackagesPath(pythonHome);
+            var pythonDllPath = EnvironmentUtils.GetPythonDllPath();
+
+            Environment.SetEnvironmentVariable("PYTHONNET_PYDLL", pythonDllPath);
+            Environment.SetEnvironmentVariable("PYTHONHOME", pythonHome);
+            Environment.SetEnvironmentVariable("PYTHONPATH", sitePackagesPath);
         }
 
         public static string GetPythonDllPath(string pythonHome)
@@ -141,6 +151,50 @@ namespace LangSharp.Out.Services
                 return $"Erro ao executar comando Python: {ex.Message}";
             }
         }
+
+        public static void DisposePython()
+        {
+            var threadState = PythonThread.GetThreadState();
+
+            if(threadState == default)
+                return;
+
+            PythonEngine.EndAllowThreads(threadState);
+            PythonEngine.Shutdown();
+        }
+
+        public static string ExecutePythonScript(BaseScriptModel scriptModel)
+
+        {
+            var pythonScriptPath = EnvironmentUtils.GetScriptsPath(scriptModel.Name);
+
+            if (!File.Exists(pythonScriptPath))
+            {
+                throw new FileNotFoundException($"O script Python não foi encontrado: {pythonScriptPath}");
+            }
+
+
+            using (Py.GIL())  
+            {
+                // Adiciona o diretório do script ao sys.path para que o módulo possa ser encontrado
+                dynamic sys = Py.Import("sys");
+                sys.path.append(Path.GetDirectoryName(pythonScriptPath));
+
+                // Importa o módulo Python
+                dynamic module = Py.Import(scriptModel.ModuleName);
+
+                // Obtém a função desejada
+                dynamic method = module.GetAttr(scriptModel.FunctionName);
+
+                // Chama a função com os argumentos passados usando Invoke
+                dynamic result = scriptModel.ProcessMethod(method);
+
+                // (Opcional) Processar o resultado conforme necessário
+                return $"Resultado da chamada: {result}";
+            }
+        }
+
+
 
         public static string CallPythonFunction(string moduleName, string functionName, params object[] args)
         {
