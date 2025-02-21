@@ -9,21 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="python" Version="3.13.2" />
+    <PackageReference Include="python" Version="3.11.7" />
     <PackageReference Include="pythonnet" Version="3.0.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="py-dll\**\*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="scripts\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="py-lib\" />
   </ItemGroup>
 
 
