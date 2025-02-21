@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LangSharp.Out.Models.Base;
 
 namespace LangSharp.Out.Core
 {
@@ -17,5 +13,6 @@ namespace LangSharp.Out.Core
         /// <param name="command">Comando a ser executado.</param>
         /// <returns>Resultado da execução.</returns>
         string ExecutePythonCommand(string command);
+        string ExecutePythonScript(BaseScriptModel scriptModel);
     }
 }

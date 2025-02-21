@@ -22,6 +22,7 @@ namespace LangSharp.Out.Handlers
         public string Handle(string command)
         {
             string result = PythonService.ExecuteCommand(command);
+
             if (result.StartsWith("Erro"))
             {
                 return result;
