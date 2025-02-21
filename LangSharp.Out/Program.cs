@@ -16,6 +16,7 @@ namespace LangSharp.Out
             //string result = sdkFacade.ExecutePythonCommand(command);
             //Console.WriteLine($"Resultado: {result}");
 
+            //Inicia demonstraçao Python No c#
 
             InityPy.StartDemo();
         }

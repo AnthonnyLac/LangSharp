@@ -37,8 +37,10 @@
                 pythonInterop.ExecutePythonScript(scriptName, moduleName, methodName, argsPython);
 
                 //Teste
+
                 pythonInterop.CreateVirtualEnvironment();
                 pythonInterop.InstallPythonPackage("langchain");
+
 
             }
             catch (Exception ex)
