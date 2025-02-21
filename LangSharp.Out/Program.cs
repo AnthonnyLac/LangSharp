@@ -1,5 +1,5 @@
 ﻿using LangSharp.Out.Core;
-using LangSharp.Out.Demo;
+using LangSharp.Out.Models;
 
 namespace LangSharp.Out
 {
@@ -7,18 +7,18 @@ namespace LangSharp.Out
     {
         static void Main(string[] args)
         {
+            using var sdkFacade = new SDKFacade();
 
-            ISDKService sdkFacade = new SDKFacade();
+            //Commando Python
+            string command = "print('Hello World From Python :p')";
 
-            //Console.WriteLine("Digite um comando Python:");
-            //string command = Console.ReadLine();
+            string result = sdkFacade.ExecutePythonCommand(command);
 
-            //string result = sdkFacade.ExecutePythonCommand(command);
-            //Console.WriteLine($"Resultado: {result}");
+            //Script Python
+            var scriptDto = new SomaScript("LangSharp.py", "LangSharp", "somar", [1, 2]);
+            var resultScript = sdkFacade.ExecutePythonScript(scriptDto);
 
-            //Inicia demonstraçao Python No c#
-
-            InityPy.StartDemo();
+            Console.WriteLine($"Script: {resultScript}");
         }
     }
 }
