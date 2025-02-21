@@ -7,13 +7,14 @@ namespace LangSharp.Out
     {
         static void Main(string[] args)
         {
+
             ISDKService sdkFacade = new SDKFacade();
 
-            Console.WriteLine("Digite um comando Python:");
-            string command = Console.ReadLine();
+            //Console.WriteLine("Digite um comando Python:");
+            //string command = Console.ReadLine();
 
-            string result = sdkFacade.ExecutePythonCommand(command);
-            Console.WriteLine($"Resultado: {result}");
+            //string result = sdkFacade.ExecutePythonCommand(command);
+            //Console.WriteLine($"Resultado: {result}");
 
             //Inicia demonstraçao Python No c#
 
