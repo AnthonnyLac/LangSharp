@@ -130,7 +130,9 @@ namespace LangSharp.Out
 
         private string GetPythonBasePath()
         {
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"py-dll\python\3.11.7\tools");
+            string nugetPackageDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".nuget", "packages");
+
+            return Path.Combine(nugetPackageDir, "python", "3.11.7", "tools");
         }
 
         private string GetVenvPath()
