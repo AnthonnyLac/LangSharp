@@ -7,14 +7,14 @@ namespace LangSharp.Core.Handlers
     {
         public override object Handle(object request)
         {
-            // Define e valida variáveis de ambiente
+            // Sets and validates environment variables
             if (true)
             {
                 return base.Handle(request);
             }
             else
             {
-                return "Variáveis de ambiente não estão configuradas corretamente.";
+                return "Environment variables are not set correctly.";
             }
         }
     }

@@ -7,14 +7,14 @@ namespace LangSharp.Core.Handlers
     {
         public override object Handle(object request)
         {
-            // Inicializa o runtime do Python
+            // Initializes the Python runtime
             if (true)
             {
                 return base.Handle(request);
             }
             else
             {
-                return "Falha ao inicializar o Python.";
+                return "Failed to initialize Python.";
             }
         }
     }

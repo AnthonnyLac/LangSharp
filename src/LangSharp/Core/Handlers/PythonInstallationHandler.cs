@@ -7,14 +7,14 @@ namespace LangSharp.Core.Handlers
     {
         public override object Handle(object request)
         {
-            // Verifica se o Python está instalado
+            // Checks if Python is installed
             if (true)
             {
                 return base.Handle(request);
             }
             else
             {
-                return "Python não está instalado.";
+                return "Python is not installed.";
             }
         }
     }

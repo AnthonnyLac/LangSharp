@@ -1,4 +1,6 @@
-﻿using LangSharp.Core.Handlers;
+﻿using LangSharp.Core.Configuration;
+using LangSharp.Core.Factorys;
+using LangSharp.Core.Handlers;
 using LangSharp.Core.Interfaces.Handlers;
 using LangSharp.Core.Interfaces.Services;
 using LangSharp.Core.Services;
@@ -9,16 +11,23 @@ namespace LangSharp.Registrations
 {
     public class ServiceRegistrar
     {
-        public static void AddRequiredServices(IServiceCollection services)
+        public static void AddRequiredServices(IServiceCollection services, LangSharpConfiguration configuration)
         {
-            // Registrando os handlers como scoped
-            services.AddScoped<IPythonInstallationHandler, PythonInstallationHandler>();
-            services.AddScoped<IEnvironmentVariablesHandler, EnvironmentVariablesHandler>();
-            services.AddScoped<IInitializePythonHandler, InitializePythonHandler>();
-            services.AddScoped<IPythonExecutionHandler, PythonExecutionHandler>();
+            // Add handlers
+            services.TryAddScoped<IPythonInstallationHandler, PythonInstallationHandler>();
+            services.TryAddScoped<IEnvironmentVariablesHandler, EnvironmentVariablesHandler>();
+            services.TryAddScoped<IInitializePythonHandler, InitializePythonHandler>();
+            services.TryAddScoped<IPythonExecutionHandler, PythonExecutionHandler>();
 
             // Add singletons
             services.TryAddSingleton<ILangSharpService, LangSharpService>();
+
+            //Add SDK Config
+            services.TryAddSingleton(configuration);
+
+            // Add AI Provider
+            var aiProvider = CloudAIProviderFactory.CreateProvider(configuration.AIProvider);
+            services.TryAddSingleton(aiProvider);
         }
     }
 }

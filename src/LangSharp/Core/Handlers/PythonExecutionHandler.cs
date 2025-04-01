@@ -7,8 +7,8 @@ namespace LangSharp.Core.Handlers
     {
         public override object Handle(object request)
         {
-            // Executa o código Python e retorna o resultado
-            var result = string.Empty ;
+            // Executes the Python code and returns the result
+            var result = string.Empty;
             return result ?? base.Handle(request);
         }
     }
