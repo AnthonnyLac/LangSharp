@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangSharp.Out.Old", "LangSharp.Out\LangSharp.Out.Old.csproj", "{EB7F1BE0-EDA0-4249-9943-8E7FB72E9F18}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangSharp", "src\LangSharp\LangSharp.csproj", "{5DA14FBB-4F80-4CB0-9D34-1E80E2B430BC}"
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EB7F1BE0-EDA0-4249-9943-8E7FB72E9F18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB7F1BE0-EDA0-4249-9943-8E7FB72E9F18}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB7F1BE0-EDA0-4249-9943-8E7FB72E9F18}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB7F1BE0-EDA0-4249-9943-8E7FB72E9F18}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5DA14FBB-4F80-4CB0-9D34-1E80E2B430BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5DA14FBB-4F80-4CB0-9D34-1E80E2B430BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DA14FBB-4F80-4CB0-9D34-1E80E2B430BC}.Release|Any CPU.ActiveCfg = Release|Any CPU

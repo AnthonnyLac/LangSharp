@@ -1,4 +1,6 @@
-﻿namespace LangSharp.Utils
+﻿using System.Diagnostics;
+
+namespace LangSharp.Utils
 {
     public static class EnvironmentUtils
     {

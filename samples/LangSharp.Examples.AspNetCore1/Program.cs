@@ -1,7 +1,9 @@
 ﻿using LangSharp.Core.Configuration;
 using LangSharp.Core.Enums;
+using LangSharp.Core.Interfaces.Services;
 using LangSharp.Registrations;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,4 +19,8 @@ ServiceRegistrar.AddRequiredServices(builder.Services, sdkConfiguration);
 
 var app = builder.Build();
 
-app.Run();
+
+//Debugging the AI chat service
+var service = app.Services.GetService<ILangSharpService>();
+
+await service!.CallAIChatAsync("print('Hello, how are you?')");

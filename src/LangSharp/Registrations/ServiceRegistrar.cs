@@ -17,10 +17,11 @@ namespace LangSharp.Registrations
             services.TryAddScoped<IPythonInstallationHandler, PythonInstallationHandler>();
             services.TryAddScoped<IEnvironmentVariablesHandler, EnvironmentVariablesHandler>();
             services.TryAddScoped<IInitializePythonHandler, InitializePythonHandler>();
-            services.TryAddScoped<IPythonExecutionHandler, PythonExecutionHandler>();
 
             // Add singletons
             services.TryAddSingleton<ILangSharpService, LangSharpService>();
+            services.TryAddSingleton<IPythonService, PythonService>();
+
 
             //Add SDK Config
             services.TryAddSingleton(configuration);
