@@ -24,11 +24,11 @@ namespace LangSharp.Core.Services
             _handlerChain = pythonInstallationHandler;
         }
 
-        public async Task<object> CallAIChatAsync(string prompt)
+        public Task<object> CallAIChatAsync(string prompt)
         {
             _handlerChain.Handle(string.Empty);
 
-            return  _pythonService.ExecuteCommand(prompt);
+            return Task.FromResult<object>(_pythonService.ExecuteCommand(prompt));
         }
 
         public Task<object> ExecuteDatabaseQueryAsync(string query)
@@ -39,6 +39,7 @@ namespace LangSharp.Core.Services
         public void Dispose()
         {
             _pythonService.DisposePython();
+            GC.SuppressFinalize(this);
         }
     }
 }

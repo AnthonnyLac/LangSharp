@@ -18,9 +18,9 @@ namespace LangSharp.Registrations
             services.TryAddScoped<IEnvironmentVariablesHandler, EnvironmentVariablesHandler>();
             services.TryAddScoped<IInitializePythonHandler, InitializePythonHandler>();
 
-            // Add singletons
-            services.TryAddSingleton<ILangSharpService, LangSharpService>();
-            services.TryAddSingleton<IPythonService, PythonService>();
+            //add services
+            services.TryAddScoped<ILangSharpService, LangSharpService>();
+            services.TryAddScoped<IPythonService, PythonService>();
 
 
             //Add SDK Config

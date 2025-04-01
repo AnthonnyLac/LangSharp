@@ -19,9 +19,7 @@ namespace LangSharp.Core.Handlers
         public override object Handle(object request)
         {
             if (!_pythonService.IsPythonInstalled())
-            {
                 return "Error: Python is not installed.";
-            }
 
             return base.Handle(request);
         }
