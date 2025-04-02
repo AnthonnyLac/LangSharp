@@ -40,11 +40,7 @@ namespace LangSharp.Core.Services
         {
             try
             {
-                string? pythonHome = Environment.GetEnvironmentVariable("PYTHONHOME");
-                string? pythonPath = Environment.GetEnvironmentVariable("PYTHONPATH");
-
-                if (string.IsNullOrEmpty(pythonHome) || string.IsNullOrEmpty(pythonPath))
-                    SetEnvironmentPath();
+  
 
                 return true;
             }
@@ -101,8 +97,29 @@ namespace LangSharp.Core.Services
 
         public bool IsPythonInstalled()
         {
-            //To Do: add implementation to check if Python is installed
-            return true;
+            try
+            {
+                var pythonDllPath = EnvironmentUtils.GetPythonDllPath();
+                if (string.IsNullOrEmpty(pythonDllPath) || !File.Exists(pythonDllPath))
+                {
+                    Console.Error.WriteLine("Python DLL not found.");
+                    return false;
+                }
+
+                var pythonHome = EnvironmentUtils.GetPythonBasePath();
+                if (string.IsNullOrEmpty(pythonHome) || !Directory.Exists(pythonHome))
+                {
+                    Console.Error.WriteLine("Python directory not found.");
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error checking Python installation: {ex.Message}");
+                return false;
+            }
         }
     }
 }

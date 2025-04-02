@@ -11,15 +11,15 @@ namespace LangSharp.Core.Services
 
         public LangSharpService(
              IValidatorHandler validatorHandler,
-             IPythonInstallationHandler pythonInstallationHandler,
              IEnvironmentVariablesHandler environmentVariablesHandler,
+             IPythonInstallationHandler pythonInstallationHandler,
              IInitializePythonHandler initializePythonHandler,
              IExecuteHandler executeHandler,            
              IPythonService pythonService)
         {
             pythonInstallationHandler
-                .SetNext(validatorHandler)
                 .SetNext(environmentVariablesHandler)
+                .SetNext(validatorHandler)
                 .SetNext(initializePythonHandler)
                 .SetNext(executeHandler);
 
