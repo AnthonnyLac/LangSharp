@@ -14,11 +14,13 @@ namespace LangSharp.Core.Services
              IEnvironmentVariablesHandler environmentVariablesHandler,
              IPythonInstallationHandler pythonInstallationHandler,
              IInitializePythonHandler initializePythonHandler,
-             IExecuteHandler executeHandler,            
+             IExecuteHandler executeHandler,
+             IConfigurationHandler configurationHandler,
              IPythonService pythonService)
         {
             pythonInstallationHandler
                 .SetNext(environmentVariablesHandler)
+                .SetNext(configurationHandler)
                 .SetNext(validatorHandler)
                 .SetNext(initializePythonHandler)
                 .SetNext(executeHandler);

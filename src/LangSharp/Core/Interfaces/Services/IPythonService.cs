@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using LangSharp.Core.Configuration;
+using System.Diagnostics;
 
 namespace LangSharp.Core.Interfaces.Services
 {
@@ -7,6 +8,7 @@ namespace LangSharp.Core.Interfaces.Services
         void InitializePython();
         bool IsPythonInstalled();
         void SetEnvironmentPath();
+        void SetEnvironmentConfigs(LangSharpConfiguration configuration);
         string ExecuteCommand(string command);
         string ExecutePythonScript(object scriptModel);
         string CallPythonFunction(string moduleName, string functionName, params object[] args);

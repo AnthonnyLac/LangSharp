@@ -1,15 +1,16 @@
 ﻿using LangSharp.Core.Abstractions;
+using LangSharp.Core.Configuration;
 using LangSharp.Core.Interfaces.Handlers;
 using LangSharp.Core.Interfaces.Services;
 using LangSharp.Core.Services;
 
 namespace LangSharp.Core.Handlers
 {
-    public class EnvironmentVariablesHandler : AbstractHandler, IEnvironmentVariablesHandler
+    public class EnvironmentVariablesPythonHandler : AbstractHandler, IEnvironmentVariablesHandler
     {
         private readonly IPythonService _pythonService;
 
-        public EnvironmentVariablesHandler(IPythonService pythonService)
+        public EnvironmentVariablesPythonHandler(IPythonService pythonService)
         {
             _pythonService = pythonService;
         }

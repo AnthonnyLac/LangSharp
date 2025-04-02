@@ -1,4 +1,5 @@
-﻿using LangSharp.Core.Interfaces.Services;
+﻿using LangSharp.Core.Configuration;
+using LangSharp.Core.Interfaces.Services;
 using LangSharp.Utils;
 using Python.Runtime;
 
@@ -120,6 +121,11 @@ namespace LangSharp.Core.Services
                 Console.Error.WriteLine($"Error checking Python installation: {ex.Message}");
                 return false;
             }
+        }
+        public void SetEnvironmentConfigs(LangSharpConfiguration configuration)
+        {
+
+            Environment.SetEnvironmentVariable("PYTHONNET_CONFIG_API_KEY", configuration.ApiKey);
         }
     }
 }
