@@ -25,7 +25,6 @@ namespace LangSharp.Registrations
             services.TryAddScoped<ILangSharpService, LangSharpService>();
             services.TryAddScoped<IPythonService, PythonService>();
 
-
             //Add SDK Config
             services.TryAddSingleton(configuration);
 
