@@ -28,8 +28,12 @@ namespace LangSharp.Registrations
             //Add SDK Config
             services.TryAddSingleton(configuration);
 
+            // Build a temporary service provider to resolve IPythonService
+            var serviceProvider = services.BuildServiceProvider();
+            IPythonService pythonService = serviceProvider.GetRequiredService<IPythonService>();
+
             // Add AI Provider
-            var aiProvider = CloudAIProviderFactory.CreateProvider(configuration.AIProvider);
+            var aiProvider = CloudAIProviderFactory.CreateProvider(configuration.AIProvider, pythonService);
             services.TryAddSingleton(aiProvider);
         }
     }
