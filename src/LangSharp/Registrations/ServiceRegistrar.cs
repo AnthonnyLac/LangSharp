@@ -14,7 +14,7 @@ namespace LangSharp.Registrations
         public static void AddRequiredServices(IServiceCollection services, LangSharpConfiguration configuration)
         {
             // Add handlers
-            services.TryAddScoped<IValidatorHandler, ValidatorHandler>();
+            services.TryAddScoped<IValidatorHandler, RequestValidatorHandler>();
             services.TryAddScoped<IPythonInstallationHandler, PythonInstallationHandler>();
             services.TryAddScoped<IEnvironmentVariablesHandler, EnvironmentVariablesPythonHandler>();
             services.TryAddScoped<IInitializePythonHandler, InitializePythonHandler>();

@@ -1,17 +1,16 @@
 ﻿using LangSharp.Core.Abstractions;
 using LangSharp.Core.Interfaces.Handlers;
-using LangSharp.Core.Interfaces.Services;
 
 namespace LangSharp.Core.Handlers
 {
-    public class ValidatorHandler : AbstractHandler, IValidatorHandler
+    public class RequestValidatorHandler : AbstractHandler, IValidatorHandler
     {
-        public ValidatorHandler()
+        public RequestValidatorHandler()
         {
         }
 
         public override object Handle(object request)
-         {
+        {
             if (request == null)
                 return "Error: Request is null.";
 
