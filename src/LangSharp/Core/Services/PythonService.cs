@@ -38,15 +38,21 @@ namespace LangSharp.Core.Services
 
         public bool ArePythonNetVariablesSet()
         {
-            string? pythonHome = Environment.GetEnvironmentVariable("PYTHONHOME");
-            string? pythonPath = Environment.GetEnvironmentVariable("PYTHONPATH");
-
-            if (string.IsNullOrEmpty(pythonHome) || string.IsNullOrEmpty(pythonPath))
+            try
             {
-                SetEnvironmentPath();
-            }
+                string? pythonHome = Environment.GetEnvironmentVariable("PYTHONHOME");
+                string? pythonPath = Environment.GetEnvironmentVariable("PYTHONPATH");
 
-            return true;
+                if (string.IsNullOrEmpty(pythonHome) || string.IsNullOrEmpty(pythonPath))
+                    SetEnvironmentPath();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error setting Python environment variables: {ex.Message}");
+                throw;
+            }
         }
 
         public string ExecuteCommand(string command)
@@ -67,16 +73,7 @@ namespace LangSharp.Core.Services
             }
         }
 
-        public void DisposePython()
-        {
-            var threadState = PythonThread.GetThreadState();
 
-            if (threadState == default)
-                return;
-
-            PythonEngine.EndAllowThreads(threadState);
-            PythonEngine.Shutdown();
-        }
 
         public string CallPythonFunction(string moduleName, string functionName, params object[] args)
         {

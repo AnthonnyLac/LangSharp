@@ -9,7 +9,6 @@ namespace LangSharp.Core.Interfaces.Services
         void SetEnvironmentPath();
         bool ArePythonNetVariablesSet();
         string ExecuteCommand(string command);
-        void DisposePython();
         string ExecutePythonScript(object scriptModel);
         string CallPythonFunction(string moduleName, string functionName, params object[] args);
     }

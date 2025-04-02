@@ -1,7 +1,7 @@
 ﻿using LangSharp.Core.Configuration;
 using LangSharp.Core.Enums;
 using LangSharp.Core.Interfaces.Services;
-using LangSharp.Registrations;
+using LangSharp.MicrosoftExtensionsDI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +15,7 @@ var sdkConfiguration = new LangSharpConfigurationBuilder()
     .Build();
 
 // Adding the services and the SDK configuration
-ServiceRegistrar.AddRequiredServices(builder.Services, sdkConfiguration);
+builder.Services.AddLangSharp(sdkConfiguration);
 
 var app = builder.Build();
 
