@@ -7,7 +7,6 @@ namespace LangSharp.Core.Services
     public class LangSharpService : ILangSharpService
     {
         private readonly IHandler _handlerChain;
-        private readonly IPythonService _pythonService;
 
         public LangSharpService(
              IValidatorHandler validatorHandler,
@@ -15,8 +14,7 @@ namespace LangSharp.Core.Services
              IPythonInstallationHandler pythonInstallationHandler,
              IInitializePythonHandler initializePythonHandler,
              IExecuteHandler executeHandler,
-             IConfigurationHandler configurationHandler,
-             IPythonService pythonService)
+             IConfigurationHandler configurationHandler)
         {
             pythonInstallationHandler
                 .SetNext(environmentVariablesHandler)
@@ -26,7 +24,6 @@ namespace LangSharp.Core.Services
                 .SetNext(executeHandler);
 
             _handlerChain = pythonInstallationHandler;
-            _pythonService = pythonService;
         }
 
         public Task<object> CallAIChatAsync(string prompt)
