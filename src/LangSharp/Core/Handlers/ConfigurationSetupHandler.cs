@@ -5,12 +5,12 @@ using LangSharp.Core.Interfaces.Services;
 
 namespace LangSharp.Core.Handlers
 {
-    public class ConfigurationHandler : AbstractHandler, IConfigurationHandler
+    public class ConfigurationSetupHandler : AbstractHandler, IConfigurationSetupHandler
     {
         private readonly IPythonService _pythonService;
         private readonly LangSharpConfiguration _configuration;
 
-        public ConfigurationHandler(IPythonService pythonService, LangSharpConfiguration configuration)
+        public ConfigurationSetupHandler(IPythonService pythonService, LangSharpConfiguration configuration)
         {
             _pythonService = pythonService;
             _configuration = configuration;

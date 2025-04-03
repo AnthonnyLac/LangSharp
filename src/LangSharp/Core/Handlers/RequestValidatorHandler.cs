@@ -5,7 +5,7 @@ using LangSharp.Core.Interfaces.Handlers;
 
 namespace LangSharp.Core.Handlers
 {
-    public class RequestValidatorHandler : AbstractHandler, IValidatorHandler
+    public class RequestValidatorHandler : AbstractHandler, IRequestValidatorHandler
     {
         public RequestValidatorHandler()
         {

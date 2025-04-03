@@ -15,6 +15,8 @@ namespace LangSharp.Core.Interfaces.Services
         string ExecutePythonScript(AbstractScript scriptModel);
         string CallPythonFunction(string moduleName, string functionName, params object[] args);
         void InstallOpenAIDependencies();
+        void CreateVirtualEnvironment();
+        bool IsVirtualEnvironmentCreated();
 
     }
 }

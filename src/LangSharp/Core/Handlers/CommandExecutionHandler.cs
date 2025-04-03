@@ -7,11 +7,11 @@ using LangSharp.Core.Interfaces.Services;
 
 namespace LangSharp.Core.Handlers
 {
-    public class ExecuteHandler : AbstractHandler, IExecuteHandler
+    public class CommandExecutionHandler : AbstractHandler, ICommandExecutionHandler
     {
         private readonly ICloudAIProvider _cloudAIProvider;
 
-        public ExecuteHandler(IPythonService pythonService, ICloudAIProvider cloudAIProvider)
+        public CommandExecutionHandler(IPythonService pythonService, ICloudAIProvider cloudAIProvider)
         {
             _cloudAIProvider = cloudAIProvider;
         }

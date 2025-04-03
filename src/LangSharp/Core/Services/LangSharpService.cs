@@ -11,23 +11,25 @@ namespace LangSharp.Core.Services
         private readonly IHandler _handlerChain;
 
         public LangSharpService(
-             IValidatorHandler validatorHandler,
-             IEnvironmentVariablesHandler environmentVariablesHandler,
-             IPythonInstallationHandler pythonInstallationHandler,
-             IInitializePythonHandler initializePythonHandler,
-             IExecuteHandler executeHandler,
-             IPythonDependencyHandler pythonDependencyHandler,
-             IConfigurationHandler configurationHandler)
+             IRequestValidatorHandler requestValidatorHandler,
+             IConfigurationSetupHandler configurationSetupHandler,
+             ISetEnvironmentVariablesHandler setEnvironmentVariablesHandler,
+             IVirtualEnvironmentHandler virtualEnvironmentHandler,
+             IPythonInstallationCheckerHandler pythonInstallationCheckerHandler,
+             IPythonInitializerHandler pythonInitializerHandler,
+             IPythonDependenciesInstallerHandler pythonDependenciesInstallerHandler,
+             ICommandExecutionHandler commandExecutionHandler)
         {
-            pythonInstallationHandler
-                .SetNext(environmentVariablesHandler)
-                .SetNext(configurationHandler)
-                .SetNext(validatorHandler)
-                .SetNext(initializePythonHandler)
-                .SetNext(pythonDependencyHandler)
-                .SetNext(executeHandler);
+            requestValidatorHandler
+                .SetNext(configurationSetupHandler)
+                .SetNext(setEnvironmentVariablesHandler)
+                .SetNext(pythonInstallationCheckerHandler)
+                .SetNext(pythonInitializerHandler)
+                .SetNext(virtualEnvironmentHandler)
+                .SetNext(pythonDependenciesInstallerHandler)
+                .SetNext(commandExecutionHandler);
 
-            _handlerChain = pythonInstallationHandler;
+            _handlerChain = requestValidatorHandler;
         }
 
         public Task<object> CallAIChatAsync(string prompt)

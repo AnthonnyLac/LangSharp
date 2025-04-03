@@ -2,7 +2,7 @@
 
 namespace LangSharp.Core.Interfaces.Handlers
 {
-    public interface IEnvironmentVariablesHandler : IHandler
+    public interface IConfigurationSetupHandler : IHandler
     {
     }
 }

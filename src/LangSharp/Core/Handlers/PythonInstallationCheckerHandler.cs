@@ -7,11 +7,11 @@ namespace LangSharp.Core.Handlers
     /// <summary>
     /// Checks if Python is installed on the system.
     /// </summary>
-    public class PythonInstallationHandler : AbstractHandler, IPythonInstallationHandler
+    public class PythonInstallationCheckerHandler : AbstractHandler, IPythonInstallationCheckerHandler
     {
         private readonly IPythonService _pythonService;
 
-        public PythonInstallationHandler(IPythonService pythonService)
+        public PythonInstallationCheckerHandler(IPythonService pythonService)
         {
             _pythonService = pythonService;
         }

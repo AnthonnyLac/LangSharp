@@ -4,5 +4,6 @@
     {
         public const string PythonVersion = "3.11.7";
         public const string DllVersionName = "python311.dll";
+        public const string VirtualEnvironment = "langsharp";
     }
 }

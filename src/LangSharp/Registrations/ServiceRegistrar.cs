@@ -14,13 +14,14 @@ namespace LangSharp.Registrations
         public static void AddRequiredServices(IServiceCollection services, LangSharpConfiguration configuration)
         {
             // Add handlers
-            services.TryAddScoped<IValidatorHandler, RequestValidatorHandler>();
-            services.TryAddScoped<IPythonInstallationHandler, PythonInstallationHandler>();
-            services.TryAddScoped<IPythonDependencyHandler, PythonDependencyHandler>();
-            services.TryAddScoped<IEnvironmentVariablesHandler, EnvironmentVariablesPythonHandler>();
-            services.TryAddScoped<IInitializePythonHandler, InitializePythonHandler>();
-            services.TryAddScoped<IExecuteHandler, ExecuteHandler>();
-            services.TryAddScoped<IConfigurationHandler, ConfigurationHandler>();
+            services.TryAddScoped<IRequestValidatorHandler, RequestValidatorHandler>();
+            services.TryAddScoped<IConfigurationSetupHandler, ConfigurationSetupHandler>();
+            services.TryAddScoped<ISetEnvironmentVariablesHandler, SetEnvironmentVariablesHandler>();
+            services.TryAddScoped<IVirtualEnvironmentHandler, VirtualEnvironmentHandler>();
+            services.TryAddScoped<IPythonInstallationCheckerHandler, PythonInstallationCheckerHandler>();
+            services.TryAddScoped<IPythonInitializerHandler, PythonInitializerHandler>();
+            services.TryAddScoped<IPythonDependenciesInstallerHandler, PythonDependenciesInstallerHandler>();
+            services.TryAddScoped<ICommandExecutionHandler, CommandExecutionHandler>();
 
             //add services
             services.TryAddScoped<ILangSharpService, LangSharpService>();

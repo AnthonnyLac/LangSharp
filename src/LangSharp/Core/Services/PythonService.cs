@@ -42,7 +42,7 @@ namespace LangSharp.Core.Services
         {
             try
             {
-  
+
 
                 return true;
             }
@@ -146,14 +146,14 @@ namespace LangSharp.Core.Services
         {
             string path = EnvironmentUtils.GetPythonBasePath();
 
-            if(IsPythonPackageInstalled(packageName))
+            if (IsPythonPackageInstalled(packageName))
                 return;
 
-            using (Py.GIL()) 
+            using (Py.GIL())
             {
                 dynamic subprocess = Py.Import("subprocess");
 
-                string pythonExecutable = Path.Combine(path,  "python.exe");
+                string pythonExecutable = Path.Combine(path, "python.exe");
 
                 subprocess.check_call(new[] { pythonExecutable, "-m", "pip", "install", packageName });
             }
@@ -185,6 +185,23 @@ namespace LangSharp.Core.Services
             InstallPythonPackage(PythonPackage.LangChainOpenai);
             InstallPythonPackage(PythonPackage.LangChainCommunity);
             InstallPythonPackage(PythonPackage.PythonDotEnv);
+        }
+
+        public void CreateVirtualEnvironment()
+        {
+            string venvPath = EnvironmentUtils.GetVenvPath();
+
+            using (Py.GIL())
+            {
+                dynamic subprocess = Py.Import("subprocess");
+                subprocess.check_call(new[] { "python", "-m", "venv", venvPath });
+            }
+
+        }
+
+        public bool IsVirtualEnvironmentCreated()
+        {
+            return Directory.Exists(EnvironmentUtils.GetVenvPath());
         }
     }
 }

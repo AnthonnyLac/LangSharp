@@ -4,11 +4,11 @@ using LangSharp.Core.Interfaces.Services;
 
 namespace LangSharp.Core.Handlers
 {
-    public class InitializePythonHandler : AbstractHandler, IInitializePythonHandler
+    public class PythonInitializerHandler : AbstractHandler, IPythonInitializerHandler
     {
         private readonly IPythonService _pythonService;
 
-        public InitializePythonHandler(IPythonService pythonService)
+        public PythonInitializerHandler(IPythonService pythonService)
         {
             _pythonService = pythonService;
         }
