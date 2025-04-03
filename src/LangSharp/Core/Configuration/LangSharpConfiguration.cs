@@ -6,6 +6,5 @@ namespace LangSharp.Core.Configuration
     {
         public AIProviderType AIProvider { get; set; }
         public string ApiKey { get; set; }
-        public string PythonEnvironment { get; set; }
     }
 }

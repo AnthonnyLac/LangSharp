@@ -11,7 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 var sdkConfiguration = new LangSharpConfigurationBuilder()
     .SetAIProvider(AIProviderType.OpenAI)
     .SetApiKey("your-api-key")
-    .SetPythonEnvironment("path/to/python/environment")
     .Build();
 
 // Adding the services and the SDK configuration

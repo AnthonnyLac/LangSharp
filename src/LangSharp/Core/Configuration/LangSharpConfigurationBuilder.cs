@@ -23,11 +23,6 @@ namespace LangSharp.Core.Configuration
             return this;
         }
 
-        public LangSharpConfigurationBuilder SetPythonEnvironment(string environment)
-        {
-            _configuration.PythonEnvironment = environment;
-            return this;
-        }
 
         public LangSharpConfiguration Build()
         {
