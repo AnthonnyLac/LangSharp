@@ -1,6 +1,9 @@
-﻿using LangSharp.Core.Interfaces.Handlers;
+﻿using LangSharp.Core.Commands;
+using LangSharp.Core.Enums;
+using LangSharp.Core.Interfaces.Handlers;
 using LangSharp.Core.Interfaces.Handlers.Base; 
 using LangSharp.Core.Interfaces.Services;
+using System.Data;
 
 namespace LangSharp.Core.Services
 {
@@ -30,14 +33,16 @@ namespace LangSharp.Core.Services
 
         public Task<object> CallAIChatAsync(string prompt)
         {
-            var result = _handlerChain.Handle(prompt);
+            var result = _handlerChain.Handle(new CommandRequest(TypeCommand.GetResponse, prompt));
 
             return Task.FromResult(result);
         }
 
         public Task<object> ExecuteDatabaseQueryAsync(string query)
         {
-            throw new NotImplementedException();
+            var result = _handlerChain.Handle(new CommandRequest(TypeCommand.ExecuteDatabaseQuery, query));
+
+            return Task.FromResult(result);
         }
     }
 }

@@ -3,5 +3,6 @@
     public interface ICloudAIProvider
     {
         string GetResponse(string prompt);
+        string ExecuteDatabaseQuery(string query);
     }
 }

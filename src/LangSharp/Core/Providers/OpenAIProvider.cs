@@ -13,6 +13,11 @@ namespace LangSharp.Core.Providers
             _pythonService = pythonService;
         }
 
+        public string ExecuteDatabaseQuery(string query)
+        {
+            return "OpenAI Cloud response";
+        }
+
         public string GetResponse(string prompt)
         {
             string apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")!;

@@ -1,4 +1,6 @@
 ﻿using LangSharp.Core.Abstractions;
+using LangSharp.Core.Commands;
+using LangSharp.Core.Enums;
 using LangSharp.Core.Interfaces.Handlers;
 using LangSharp.Core.Interfaces.Providers;
 using LangSharp.Core.Interfaces.Services;
@@ -16,14 +18,23 @@ namespace LangSharp.Core.Handlers
 
         public override object Handle(object request)
         {
-            var command = request.ToString()!;
+            if (request is not CommandRequest commandRequest)
+            {
+                return base.Handle(request);
+            }
 
-            var result = _cloudAIProvider.GetResponse(command);
+            string result = commandRequest.CommandType switch
+            {
+                TypeCommand.ExecuteDatabaseQuery => _cloudAIProvider.ExecuteDatabaseQuery(commandRequest.Parameter),
+                TypeCommand.GetResponse => _cloudAIProvider.GetResponse(commandRequest.Parameter),
+                _ => "Unknown command"
+            };
 
             if (!string.IsNullOrEmpty(result))
                 return result;
 
             return base.Handle(result);
+
         }
     }
 }
