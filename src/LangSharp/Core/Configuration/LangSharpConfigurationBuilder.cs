@@ -23,6 +23,18 @@ namespace LangSharp.Core.Configuration
             return this;
         }
 
+        public LangSharpConfigurationBuilder SetModel(string model)
+        {
+            _configuration.Model = model;
+            return this;
+        }
+
+        public LangSharpConfigurationBuilder SetDatabaseUri(string? databaseUri)
+        {
+            _configuration.DatabaseUri = databaseUri;
+            return this;
+        }
+
 
         public LangSharpConfiguration Build()
         {

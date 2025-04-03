@@ -10,10 +10,12 @@ namespace LangSharp.Core.Models
 
         public override dynamic ProcessMethod(dynamic method)
         {
-            string? apiKey = ArgsFunction[1] as string;
-            string? prompt = ArgsFunction[0] as string;
+            string? apiKey = ArgsFunction[0] as string;
+            string? prompt = ArgsFunction[1] as string;
+            string? model = ArgsFunction[2] as string;
 
-            return method(apiKey, prompt);
+
+            return method(apiKey, prompt, model);  
         }
     }
 }

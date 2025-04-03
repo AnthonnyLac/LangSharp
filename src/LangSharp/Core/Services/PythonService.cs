@@ -138,6 +138,8 @@ namespace LangSharp.Core.Services
         public void SetEnvironmentConfigs(LangSharpConfiguration configuration)
         {
             Environment.SetEnvironmentVariable("OPENAI_API_KEY", configuration.ApiKey);
+            Environment.SetEnvironmentVariable("OPENAI_MODEL", configuration.Model);
+            Environment.SetEnvironmentVariable("OPENAI_DATABASE_URI", configuration.DatabaseUri);
         }
 
         public void InstallPythonPackage(string packageName)

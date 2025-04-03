@@ -26,13 +26,16 @@ class ChatOpenAI:
         )
         return response.choices[0].message.content
 
-def CallOpenIALangSharp(api_key, prompt, model="gpt-4o-mini", temperature=0.7):
+def CallOpenIALangSharp(api_key, prompt, model, temperature=0.7):
     try:
         if not api_key or not api_key.strip():
             raise ValueError("No API key provided")
         
         if not prompt or not prompt.strip():
             raise ValueError("No prompt provided")
+
+        if not model or not model.strip():
+            raise ValueError("No model provided")
 
         openai_client = ChatOpenAI(
             model=model, temperature=temperature, api_key=api_key

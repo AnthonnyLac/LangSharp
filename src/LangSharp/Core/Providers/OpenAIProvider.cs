@@ -16,7 +16,10 @@ namespace LangSharp.Core.Providers
         public string GetResponse(string prompt)
         {
             string apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")!;
-            var scriptModel = new LLMScriptModel("llm.py", "llm", "CallOpenIALangSharp", [prompt, apiKey]);
+            string model = Environment.GetEnvironmentVariable("OPENAI_MODEL")!;
+
+            var scriptModel = new LLMScriptModel("llm.py", "llm", "CallOpenIALangSharp", [apiKey, prompt, model]);
+
             return _pythonService.ExecutePythonScript(scriptModel);
         }
     }

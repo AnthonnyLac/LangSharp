@@ -19,8 +19,10 @@ namespace LangSharp.Core.Handlers
         public override object Handle(object request)
         {
             var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+            var model = Environment.GetEnvironmentVariable("OPENAI_MODEL");
+            var databaseUri = Environment.GetEnvironmentVariable("OPENAI_DATABASE_URI");
 
-            if (!string.IsNullOrEmpty(apiKey))
+            if (!string.IsNullOrEmpty(apiKey) && !string.IsNullOrEmpty(model) && !string.IsNullOrEmpty(databaseUri))
                 return base.Handle(request);
 
             _pythonService.SetEnvironmentConfigs(_configuration);
