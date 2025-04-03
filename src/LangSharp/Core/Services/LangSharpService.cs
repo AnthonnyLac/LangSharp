@@ -1,9 +1,8 @@
 ﻿using LangSharp.Core.Commands;
 using LangSharp.Core.Enums;
 using LangSharp.Core.Interfaces.Handlers;
-using LangSharp.Core.Interfaces.Handlers.Base; 
+using LangSharp.Core.Interfaces.Handlers.Base;
 using LangSharp.Core.Interfaces.Services;
-using System.Data;
 
 namespace LangSharp.Core.Services
 {

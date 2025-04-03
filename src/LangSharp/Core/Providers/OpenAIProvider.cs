@@ -15,7 +15,13 @@ namespace LangSharp.Core.Providers
 
         public string ExecuteDatabaseQuery(string query)
         {
-            return "OpenAI Cloud response";
+            string apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")!;
+            string model = Environment.GetEnvironmentVariable("OPENAI_MODEL")!;
+            string dbUri = Environment.GetEnvironmentVariable("OPENAI_DATABASE_URI")!;
+
+            var scriptModel = new QueryScriptModel("LLMQuery.py", "LLMQuery", "CallOpenIAQueryLangSharp", [apiKey, query, model, dbUri]);
+
+            return _pythonService.ExecutePythonScript(scriptModel);
         }
 
         public string GetResponse(string prompt)
