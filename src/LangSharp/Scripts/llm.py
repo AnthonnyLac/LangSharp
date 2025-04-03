@@ -27,18 +27,19 @@ class ChatOpenAI:
         return response.choices[0].message.content
 
 def CallOpenIALangSharp(api_key, prompt, model="gpt-4o-mini", temperature=0.7):
+    try:
+        if not api_key or not api_key.strip():
+            raise ValueError("No API key provided")
+        
+        if not prompt or not prompt.strip():
+            raise ValueError("No prompt provided")
 
-    if not api_key or not api_key.strip():
-        raise ValueError("No API key provided")
-    
-    if not prompt or not prompt.strip():
-        raise ValueError("No prompt provided")
-
-    openai_client = ChatOpenAI(
-        model=model, temperature=temperature, api_key=api_key
-    )
-    return openai_client.call_openai_api(prompt)
-
+        openai_client = ChatOpenAI(
+            model=model, temperature=temperature, api_key=api_key
+        )
+        return openai_client.call_openai_api(prompt)
+    except Exception as e:
+        return str(e)
 
 
 def main(args):
