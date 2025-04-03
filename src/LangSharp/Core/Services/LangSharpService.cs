@@ -14,6 +14,7 @@ namespace LangSharp.Core.Services
              IPythonInstallationHandler pythonInstallationHandler,
              IInitializePythonHandler initializePythonHandler,
              IExecuteHandler executeHandler,
+             IPythonDependencyHandler pythonDependencyHandler,
              IConfigurationHandler configurationHandler)
         {
             pythonInstallationHandler
@@ -21,6 +22,7 @@ namespace LangSharp.Core.Services
                 .SetNext(configurationHandler)
                 .SetNext(validatorHandler)
                 .SetNext(initializePythonHandler)
+                .SetNext(pythonDependencyHandler)
                 .SetNext(executeHandler);
 
             _handlerChain = pythonInstallationHandler;

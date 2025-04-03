@@ -1,4 +1,5 @@
-﻿using LangSharp.Core.Configuration;
+﻿using LangSharp.Core.Abstractions;
+using LangSharp.Core.Configuration;
 using LangSharp.Core.Interfaces.Services;
 using LangSharp.Utils;
 using Python.Runtime;
@@ -91,9 +92,21 @@ namespace LangSharp.Core.Services
             }
         }
 
-        public string ExecutePythonScript(object scriptModel)
+        public string ExecutePythonScript(AbstractScript scriptModel)
         {
-            throw new NotImplementedException();
+            var pythonScriptPath = EnvironmentUtils.GetScriptsPath(scriptModel.Name);
+
+            using (Py.GIL())
+            {
+                dynamic sys = Py.Import("sys");
+                sys.path.append(Path.GetDirectoryName(pythonScriptPath));
+
+                dynamic module = Py.Import(scriptModel.ModuleName);
+                dynamic method = module.GetAttr(scriptModel.FunctionName);
+                dynamic result = scriptModel.ProcessMethod(method);
+
+                return result != null ? $"Call result: {result}" : "Execution completed with no return.";
+            }
         }
 
         public bool IsPythonInstalled()
@@ -124,8 +137,52 @@ namespace LangSharp.Core.Services
         }
         public void SetEnvironmentConfigs(LangSharpConfiguration configuration)
         {
+            Environment.SetEnvironmentVariable("OPENAI_API_KEY", configuration.ApiKey);
+        }
 
-            Environment.SetEnvironmentVariable("PYTHONNET_CONFIG_API_KEY", configuration.ApiKey);
+        public void InstallPythonPackage(string packageName)
+        {
+            string path = EnvironmentUtils.GetPythonBasePath();
+
+            if(IsPythonPackageInstalled(packageName))
+                return;
+
+            using (Py.GIL()) 
+            {
+                dynamic subprocess = Py.Import("subprocess");
+
+                string pythonExecutable = Path.Combine(path,  "python.exe");
+
+                subprocess.check_call(new[] { pythonExecutable, "-m", "pip", "install", packageName });
+            }
+        }
+
+        public bool IsPythonPackageInstalled(string packageName)
+        {
+            // Define the path to the virtual environment
+            string path = EnvironmentUtils.GetPythonBasePath();
+
+            using (Py.GIL()) // GIL - Global Interpreter Lock
+            {
+                dynamic pkg_resources = Py.Import("pkg_resources");
+
+                try
+                {
+                    pkg_resources.get_distribution(packageName);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
+        public void InstallOpenAIDependencies()
+        {
+            InstallPythonPackage(PythonPackage.LangChainOpenai);
+            InstallPythonPackage(PythonPackage.LangChainCommunity);
+            InstallPythonPackage(PythonPackage.PythonDotEnv);
         }
     }
 }

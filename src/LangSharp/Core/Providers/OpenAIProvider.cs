@@ -1,5 +1,6 @@
 ﻿using LangSharp.Core.Interfaces.Providers;
 using LangSharp.Core.Interfaces.Services;
+using LangSharp.Core.Models;
 
 namespace LangSharp.Core.Providers
 {
@@ -14,7 +15,9 @@ namespace LangSharp.Core.Providers
 
         public string GetResponse(string prompt)
         {
-            return _pythonService.ExecuteCommand(prompt);
+            string apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")!;
+            var scriptModel = new LLMScriptModel("llm.py", "llm", "CallOpenIALangSharp", [prompt, apiKey]);
+            return _pythonService.ExecutePythonScript(scriptModel);
         }
     }
 }

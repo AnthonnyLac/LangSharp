@@ -5,12 +5,12 @@ using LangSharp.Core.Interfaces.Services;
 
 namespace LangSharp.Core.Handlers
 {
-    public class ConfigurationHandler : AbstractHandler, IConfigurationHandler
+    public class PythonDependencyHandler : AbstractHandler, IPythonDependencyHandler
     {
         private readonly IPythonService _pythonService;
         private readonly LangSharpConfiguration _configuration;
 
-        public ConfigurationHandler(IPythonService pythonService, LangSharpConfiguration configuration)
+        public PythonDependencyHandler(IPythonService pythonService, LangSharpConfiguration configuration)
         {
             _pythonService = pythonService;
             _configuration = configuration;
@@ -18,12 +18,14 @@ namespace LangSharp.Core.Handlers
 
         public override object Handle(object request)
         {
-            var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
-
-            if (!string.IsNullOrEmpty(apiKey))
-                return base.Handle(request);
-
-            _pythonService.SetEnvironmentConfigs(_configuration);
+            switch (_configuration.AIProvider)
+            {
+                case Enums.AIProviderType.OpenAI:
+                    _pythonService.InstallOpenAIDependencies();
+                    break;
+                default:
+                    return "Invalid AI provider type";
+            }
 
             return base.Handle(request);
         }
