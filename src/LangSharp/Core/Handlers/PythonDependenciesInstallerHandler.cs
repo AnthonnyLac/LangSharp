@@ -1,31 +1,27 @@
 ﻿using LangSharp.Core.Abstractions;
 using LangSharp.Core.Configuration;
 using LangSharp.Core.Interfaces.Handlers;
-using LangSharp.Core.Interfaces.Services;
+using LangSharp.Core.Interfaces.Providers;
 
 namespace LangSharp.Core.Handlers
 {
     public class PythonDependenciesInstallerHandler : AbstractHandler, IPythonDependenciesInstallerHandler
     {
-        private readonly IPythonService _pythonService;
+        private readonly ICloudAIProvider _cloudAIProvider;
         private readonly LangSharpConfiguration _configuration;
 
-        public PythonDependenciesInstallerHandler(IPythonService pythonService, LangSharpConfiguration configuration)
+        public PythonDependenciesInstallerHandler(ICloudAIProvider cloudAIProvider, LangSharpConfiguration configuration)
         {
-            _pythonService = pythonService;
+            _cloudAIProvider = cloudAIProvider;
             _configuration = configuration;
         }
 
         public override object Handle(object request)
         {
-            switch (_configuration.AIProvider)
-            {
-                case Enums.AIProviderType.OpenAI:
-                    _pythonService.InstallOpenAIDependencies();
-                    break;
-                default:
-                    return "Invalid AI provider type";
-            }
+            var result = _cloudAIProvider.InstallDependencies();
+
+            if (result == false)
+                return "Failed to install dependencies";
 
             return base.Handle(request);
         }

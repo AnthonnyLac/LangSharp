@@ -16,7 +16,7 @@ namespace LangSharp.Core.Handlers
         public override object Handle(object request)
         {
             // Initializes the Python runtime
-            _pythonService.InitializePython();
+            _pythonService.InitializePythonEngine();
 
             return base.Handle(request);
         }

@@ -22,7 +22,7 @@ namespace LangSharp.Core.Handlers
                 return base.Handle(request);
 
             // Sets and validates environment variables
-            _pythonService.SetEnvironmentPath();
+            _pythonService.ConfigureEnvironmentPaths();
 
             return base.Handle(request);
         }

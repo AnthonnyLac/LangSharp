@@ -1,6 +1,5 @@
 ﻿using LangSharp.Core.Abstractions;
 using LangSharp.Core.Interfaces.Handlers;
-using LangSharp.Core.Interfaces.Handlers.Base;
 using LangSharp.Core.Interfaces.Services;
 
 namespace LangSharp.Core.Handlers
@@ -16,10 +15,10 @@ namespace LangSharp.Core.Handlers
 
         public override object Handle(object request)
         {
-            if (_pythonService.IsVirtualEnvironmentCreated())
-                return base.Handle(request);
+            if (!_pythonService.IsVirtualEnvCreated())
+                _pythonService.CreateVirtualEnv();
 
-            _pythonService.CreateVirtualEnvironment();
+            _pythonService.ActivateVirtualEnv();
 
             return base.Handle(request);
         }
