@@ -90,10 +90,6 @@ string aiResponse = await service.CallAIChatAsync("What is the weather like toda
 Console.WriteLine(aiResponse);
 ```
 
-## Contributing
-
-Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to this project.
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
