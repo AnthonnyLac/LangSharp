@@ -12,7 +12,6 @@ LangSharp SDK is a .NET 8 library that leverages Python.NET to communicate with 
 - [Usage](#usage)
   - [Executing Queries](#executing-queries)
   - [Calling AI Cloud](#calling-ai-cloud)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Introduction
