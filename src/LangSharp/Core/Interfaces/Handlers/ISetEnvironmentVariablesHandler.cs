@@ -2,7 +2,7 @@
 
 namespace LangSharp.Core.Interfaces.Handlers
 {
-    public interface IPythonDependencyHandler : IHandler
+    public interface ISetEnvironmentVariablesHandler : IHandler
     {
     }
 }
