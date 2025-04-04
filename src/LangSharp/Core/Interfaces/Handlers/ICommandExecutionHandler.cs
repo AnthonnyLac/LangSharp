@@ -2,7 +2,7 @@
 
 namespace LangSharp.Core.Interfaces.Handlers
 {
-    public interface IValidatorHandler : IHandler
+    public interface ICommandExecutionHandler : IHandler
     {
     }
 }

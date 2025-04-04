@@ -1,5 +1,4 @@
 ﻿using LangSharp.Core.Abstractions;
-using LangSharp.Core.Configuration;
 using LangSharp.Core.Interfaces.Services;
 using LangSharp.Utils;
 using Python.Runtime;
@@ -11,7 +10,7 @@ namespace LangSharp.Core.Services
     /// </summary>
     public class PythonService : IPythonService
     {
-        public void InitializePython()
+        public void InitializePythonEngine()
         {
             if (PythonEngine.IsInitialized)
                 return;
@@ -22,9 +21,9 @@ namespace LangSharp.Core.Services
             PythonThread.SetThreadState(threadState);
         }
 
-        public void SetEnvironmentPath()
+        public void ConfigureEnvironmentPaths()
         {
-            var pythonHome = EnvironmentUtils.GetPythonBasePath();
+            var pythonHome = EnvironmentUtils.GetPythonPath();
 
             if (string.IsNullOrEmpty(pythonHome) || !Directory.Exists(pythonHome))
                 throw new DirectoryNotFoundException($"Python directory not found: {pythonHome}");
@@ -32,67 +31,13 @@ namespace LangSharp.Core.Services
             var sitePackagesPath = EnvironmentUtils.GetSitePackagesPath(pythonHome);
             var pythonDllPath = EnvironmentUtils.GetPythonDllPath();
 
-            Environment.SetEnvironmentVariable("PYTHONNET_PYDLL", pythonDllPath);
-            Environment.SetEnvironmentVariable("PYTHONHOME", pythonHome);
-            Environment.SetEnvironmentVariable("PYTHONPATH", sitePackagesPath);
+            Environment.SetEnvironmentVariable("PYTHONNET_PYDLL", pythonDllPath, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("PYTHONHOME", pythonHome, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("PYTHONPATH", sitePackagesPath, EnvironmentVariableTarget.Process);
         }
 
 
-        public bool ArePythonNetVariablesSet()
-        {
-            try
-            {
-  
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine($"Error setting Python environment variables: {ex.Message}");
-                throw;
-            }
-        }
-
-        public string ExecuteCommand(string command)
-        {
-            try
-            {
-                using (Py.GIL())
-                {
-                    dynamic pyScope = Py.CreateScope();
-                    pyScope.Exec(command);
-                    return "Command executed successfully.";
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine($"Error executing Python command: {ex.Message}");
-                return $"Error executing Python command: {ex.Message}";
-            }
-        }
-
-
-
-        public string CallPythonFunction(string moduleName, string functionName, params object[] args)
-        {
-            try
-            {
-                using (Py.GIL())
-                {
-                    dynamic pyModule = Py.Import(moduleName);
-                    dynamic pyFunction = pyModule.GetAttr(functionName);
-                    dynamic result = pyFunction.Invoke(args);
-                    return result?.ToString() ?? "Execution completed with no return.";
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine($"Error calling Python function: {ex.Message}");
-                return $"Error calling Python function: {ex.Message}";
-            }
-        }
-
-        public string ExecutePythonScript(AbstractScript scriptModel)
+        public string ExecuteScript(AbstractScript scriptModel)
         {
             var pythonScriptPath = EnvironmentUtils.GetScriptsPath(scriptModel.Name);
 
@@ -109,7 +54,7 @@ namespace LangSharp.Core.Services
             }
         }
 
-        public bool IsPythonInstalled()
+        public bool IsPythonEnvironmentInstalled()
         {
             try
             {
@@ -120,7 +65,7 @@ namespace LangSharp.Core.Services
                     return false;
                 }
 
-                var pythonHome = EnvironmentUtils.GetPythonBasePath();
+                var pythonHome = EnvironmentUtils.GetPythonPath();
                 if (string.IsNullOrEmpty(pythonHome) || !Directory.Exists(pythonHome))
                 {
                     Console.Error.WriteLine("Python directory not found.");
@@ -135,42 +80,35 @@ namespace LangSharp.Core.Services
                 return false;
             }
         }
-        public void SetEnvironmentConfigs(LangSharpConfiguration configuration)
-        {
-            Environment.SetEnvironmentVariable("OPENAI_API_KEY", configuration.ApiKey);
-            Environment.SetEnvironmentVariable("OPENAI_MODEL", configuration.Model);
-            Environment.SetEnvironmentVariable("OPENAI_DATABASE_URI", configuration.DatabaseUri);
-        }
+  
 
-        public void InstallPythonPackage(string packageName)
+        public void InstallPackage(string packageName)
         {
-            string path = EnvironmentUtils.GetPythonBasePath();
-
-            if(IsPythonPackageInstalled(packageName))
+            if (IsPackageInstalled(packageName))
                 return;
 
-            using (Py.GIL()) 
+            string? pythonExecutable = EnvironmentUtils.GetPythonPathExecutable();
+
+            using (Py.GIL())
             {
                 dynamic subprocess = Py.Import("subprocess");
 
-                string pythonExecutable = Path.Combine(path,  "python.exe");
 
                 subprocess.check_call(new[] { pythonExecutable, "-m", "pip", "install", packageName });
             }
         }
 
-        public bool IsPythonPackageInstalled(string packageName)
+        public bool IsPackageInstalled(string packageName)
         {
-            // Define the path to the virtual environment
-            string path = EnvironmentUtils.GetPythonBasePath();
+            string? pythonExecutable = EnvironmentUtils.GetPythonPathExecutable();
 
-            using (Py.GIL()) // GIL - Global Interpreter Lock
+            using (Py.GIL())
             {
-                dynamic pkg_resources = Py.Import("pkg_resources");
+                dynamic subprocess = Py.Import("subprocess");
 
                 try
                 {
-                    pkg_resources.get_distribution(packageName);
+                    subprocess.check_output(new[] { pythonExecutable, "-m", "pip", "show", packageName });
                     return true;
                 }
                 catch
@@ -180,11 +118,32 @@ namespace LangSharp.Core.Services
             }
         }
 
-        public void InstallOpenAIDependencies()
+
+
+        public void CreateVirtualEnv()
         {
-            InstallPythonPackage(PythonPackage.LangChainOpenai);
-            InstallPythonPackage(PythonPackage.LangChainCommunity);
-            InstallPythonPackage(PythonPackage.PythonDotEnv);
+            string venvPath = EnvironmentUtils.GetVenvPath();
+
+            using (Py.GIL())
+            {
+                dynamic subprocess = Py.Import("subprocess");
+                subprocess.check_call(new[] { "python", "-m", "venv", venvPath });
+            }
+
+        }
+
+        public bool IsVirtualEnvCreated()
+        {
+            return Directory.Exists(EnvironmentUtils.GetVenvPath());
+        }
+
+        public void ActivateVirtualEnv()
+        {
+            var venvPath = EnvironmentUtils.GetVenvPath();
+            var sitePackagesPath = EnvironmentUtils.GetSitePackagesPath(venvPath);
+
+            Environment.SetEnvironmentVariable("PYTHONHOME", venvPath, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("PYTHONPATH", sitePackagesPath, EnvironmentVariableTarget.Process);
         }
     }
 }

@@ -13,5 +13,10 @@ namespace LangSharp.Core.Providers
         {
             return "Google Cloud AI response";
         }
+
+        public bool InstallDependencies()
+        {
+            return false;
+        }
     }
 }

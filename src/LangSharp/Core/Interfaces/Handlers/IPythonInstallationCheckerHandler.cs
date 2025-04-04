@@ -1,7 +1,7 @@
 ﻿using LangSharp.Core.Interfaces.Handlers.Base;
 namespace LangSharp.Core.Interfaces.Handlers
 {
-    public interface IPythonInstallationHandler : IHandler
+    public interface IPythonInstallationCheckerHandler : IHandler
     {
     }
 }

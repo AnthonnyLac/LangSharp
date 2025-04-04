@@ -4,11 +4,11 @@ using LangSharp.Core.Interfaces.Services;
 
 namespace LangSharp.Core.Handlers
 {
-    public class InitializePythonHandler : AbstractHandler, IInitializePythonHandler
+    public class PythonInitializerHandler : AbstractHandler, IPythonInitializerHandler
     {
         private readonly IPythonService _pythonService;
 
-        public InitializePythonHandler(IPythonService pythonService)
+        public PythonInitializerHandler(IPythonService pythonService)
         {
             _pythonService = pythonService;
         }
@@ -16,7 +16,7 @@ namespace LangSharp.Core.Handlers
         public override object Handle(object request)
         {
             // Initializes the Python runtime
-            _pythonService.InitializePython();
+            _pythonService.InitializePythonEngine();
 
             return base.Handle(request);
         }
