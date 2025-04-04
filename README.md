@@ -1,16 +1,99 @@
+# LangSharp SDK
+
+LangSharp SDK is a .NET 8 library that leverages Python.NET to communicate with AI providers, utilizing powerful Python resources such as LangChain. This SDK provides a robust framework for executing Python commands and scripts within a .NET environment, enabling seamless integration with various AI services.
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+- [Usage](#usage)
+  - [Executing Queries](#executing-queries)
+  - [Calling AI Cloud](#calling-ai-cloud)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Introduction
+
+LangSharp SDK is designed to bridge the gap between .NET applications and Python's extensive ecosystem of AI tools. By using Python.NET, this SDK allows .NET developers to harness the power of Python libraries such as LangChain, enabling advanced AI functionalities within their .NET applications.
+
+## Features
+- **AI Provider Support**: Communicate with AI providers like OpenAI using Python scripts.
+- **Chain Requests**: Create chains through Python to make requests to AI providers.
+
+## Getting Started
+
+### Installation
+
+1. **Install the LangSharp SDK**:
+
+```shell
+   dotnet add package LangSharp.SDK
+```
+
+### Configuration
+
+Configure the LangSharp SDK using the builder pattern in your `Program.cs`:
 
 
-# LangSharp
+```csharp
+using LangSharp.Core.Configuration;
+using LangSharp.Core.Enums;
+using LangSharp.MicrosoftExtensionsDI;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
-## Visão Geral
+var builder = WebApplication.CreateBuilder(args);
 
-O projeto **LangSharp** inicialmente tinha como objetivo integrar o **IronPython** para execução de scripts Python dentro da aplicação. No entanto, após uma avaliação das necessidades de compatibilidade, ficou claro que o **IronPython** não oferece suporte para versões do Python superiores à 2.7. Como o projeto requer suporte para as funcionalidades modernas do Python, decidimos trocar para o **Python.NET**, que é compatível com versões 3.x do Python, incluindo a mais recente, **3.11.7**.
+// Building the SDK configuration using the LangSharpConfigurationBuilder
+var sdkConfiguration = new LangSharpConfigurationBuilder()
+    .SetAIProvider(AIProviderType.OpenAI)
+    .SetModel("gpt-4o-mini")
+    .SetApiKey("your-openai-api-key")
+    .SetDatabaseUri("your-database-uri") // Optional
+    .Build();
 
-O **Python.NET** proporciona uma integração robusta entre C# e Python, permitindo que integremos um interpretador Python diretamente na aplicação .NET e chamemos código Python a partir da aplicação C#. Essa solução está mais alinhada com os objetivos do projeto, garantindo a compatibilidade com versões mais recentes do Python, ao mesmo tempo que mantém a interação fluida com C#.
+// Adding the services and the SDK configuration
+builder.Services.AddLangSharp(sdkConfiguration);
 
-## Por que Python.NET?
+var app = builder.Build();
 
-As principais razões para a troca do **IronPython** para o **Python.NET** incluem:
-- **Compatibilidade**: O Python.NET suporta versões 3.x do Python, enquanto o IronPython está limitado à versão 2.x.
-- **Funcionalidades Modernas**: O Python.NET permite o uso de funcionalidades e bibliotecas modernas do Python, que não são compatíveis com o IronPython.
+app.Run();
+```
 
+## Usage
+
+### Executing Queries
+
+To execute a database query using the LangSharp SDK, you can ask a question about the table:
+
+```csharp
+using LangSharp.Core.Interfaces.Services;
+
+var service = app.Services.GetService<ILangSharpService>();
+string queryResult = await service.ExecuteDatabaseQueryAsync("What are the names of all users in the users table?");
+Console.WriteLine(queryResult);
+
+```
+
+### Calling AI Cloud
+
+To call an AI cloud service using the LangSharp SDK:
+
+```csharp
+using LangSharp.Core.Interfaces.Services;
+
+var service = app.Services.GetService<ILangSharpService>();
+string aiResponse = await service.CallAIChatAsync("What is the weather like today?");
+Console.WriteLine(aiResponse);
+```
+
+## Contributing
+
+Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to this project.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
