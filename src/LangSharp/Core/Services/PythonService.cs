@@ -50,7 +50,7 @@ namespace LangSharp.Core.Services
                 dynamic method = module.GetAttr(scriptModel.FunctionName);
                 dynamic result = scriptModel.ProcessMethod(method);
 
-                return result?["output"] != null ? $"Call result: {result["output"]}" : "Execution completed with no return.";
+                return result != null ? $"Call result: {result}" : "Execution completed with no return.";
             }
         }
 

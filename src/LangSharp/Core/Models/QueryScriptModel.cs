@@ -15,7 +15,16 @@ namespace LangSharp.Core.Models
             string? model = ArgsFunction[2] as string;
             string? db_uri = ArgsFunction[3] as string;
 
-            return method(apiKey, query, model, db_uri);
+            var result = method(apiKey, query, model, db_uri);
+
+            try
+            {
+                return result["output"];
+            }
+            catch
+            {
+                return result;
+            }
         }
     }
 }
