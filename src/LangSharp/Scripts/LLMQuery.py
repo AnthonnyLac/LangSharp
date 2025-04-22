@@ -4,13 +4,14 @@ from dotenv import load_dotenv
 from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits import create_sql_agent
 from langchain_openai import ChatOpenAI
+from langchain.chat_models import init_chat_model
 
 class QueryExecutor:
-    def __init__(self, db_uri, api_key, model, temperature, agent_type):
+    def __init__(self, db_uri, api_key, model, temperature):
         self.db = SQLDatabase.from_uri(db_uri)
         self.api_key = api_key
-        self.llm = ChatOpenAI(model=model, temperature=temperature, api_key=api_key)
-        self.agent_executor = create_sql_agent(self.llm, db=self.db, agent_type=agent_type, verbose=True)
+        self.llm = init_chat_model(model, api_key=self.api_key, temperature=temperature)
+        self.agent_executor = create_sql_agent(self.llm, db=self.db, verbose=True)
 
     def run(self, query):
         return self.agent_executor.invoke(query)
@@ -45,7 +46,7 @@ def main(args):
     if not api_key:
         raise ValueError("No API key provided")
 
-    query_executor = QueryExecutor(args.db_uri, api_key=api_key)
+    query_executor = QueryExecutor(args.db_uri, api_key=api_key, model=args.model, temperature=args.temperature)
     result = query_executor.run(args.query)
     print(result)
 
@@ -57,7 +58,7 @@ if __name__ == "__main__":
     parser.add_argument("-k", "--api_key", type=str, help="The OpenAI API key")
     parser.add_argument("-kp", "--api_key_path", type=str, help="The path to the file containing the OpenAI API key")
     parser.add_argument("-m", "--model", type=str, help="The OpenAI model to use", default="gpt-4o-mini")
-    parser.add_argument("-t", "--temperature", type=float, help="The temperature to use for the OpenAI model", default=0)
+    parser.add_argument("-t", "--temperature", type=float, help="The temperature to use for the OpenAI model", default=0.5)
 
     main(parser.parse_args())
     

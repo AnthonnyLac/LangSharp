@@ -1,5 +1,6 @@
 import argparse
 import openai
+from langchain.chat_models import init_chat_model
 import os
 from dotenv import load_dotenv
 
@@ -9,22 +10,17 @@ class ChatOpenAI:
         self.model = model
         self.temperature = temperature
         self.api_key = api_key
+        self.model = init_chat_model(self.model, api_key=self.api_key, temperature=self.temperature)
 
-    def call_openai_api(self, prompt, max_tokens=150):
-        client = openai.Client(api_key=self.api_key)
-
-        response = client.chat.completions.create(
-            model=self.model,
-            messages=[
+    def call_openai_api(self, prompt):
+        response = self.model.invoke(
+            input=[
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": prompt},
-            ],
-            max_tokens=max_tokens,
-            n=1,
-            stop=None,
-            temperature=self.temperature,
+            ]
         )
-        return response.choices[0].message.content
+
+        return response.content
 
 def CallOpenIALangSharp(api_key, prompt, model, temperature=0.7):
     try:
