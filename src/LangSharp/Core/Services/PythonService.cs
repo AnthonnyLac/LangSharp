@@ -16,9 +16,6 @@ namespace LangSharp.Core.Services
                 return;
 
             PythonEngine.Initialize();
-            var threadState = PythonEngine.BeginAllowThreads();
-
-            PythonThread.SetThreadState(threadState);
         }
 
         public void ConfigureEnvironmentPaths()

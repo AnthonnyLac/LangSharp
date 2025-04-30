@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace LangSharp.Registrations
 {
-    public class ServiceRegistrar
+    public class ServiceRegistration
     {
         public static void AddRequiredServices(IServiceCollection services, LangSharpConfiguration configuration)
         {
