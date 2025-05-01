@@ -3,11 +3,9 @@ using LangSharp.Core.Enums;
 using LangSharp.Core.Interfaces.Handlers;
 using LangSharp.Core.Interfaces.Handlers.Base;
 using LangSharp.Core.Interfaces.Services;
-using System.Diagnostics.CodeAnalysis;
 
 namespace LangSharp.Core.Services
 {
-    [ExcludeFromCodeCoverage]
     public class LangSharpService : ILangSharpService
     {
         private readonly IHandler _handlerChain;
