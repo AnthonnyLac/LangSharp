@@ -21,6 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
+
+    - name: Restore dependencies
+      run: dotnet restore LangSharp.sln
+
     - name: Pack project
       run: dotnet pack src/LangSharp/LangSharp.csproj --configuration Release --output ./bin/Release
       
