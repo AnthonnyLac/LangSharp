@@ -44,7 +44,7 @@ namespace LangSharp.UnitTests.Utils
         public void GetScriptsPath_ShouldReturnCorrectPath()
         {
             var scriptName = "test.py";
-            var expectedPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts", scriptName);
+            var expectedPath = Path.Combine("scripts", scriptName);
             Assert.Equal(expectedPath, EnvironmentUtils.GetScriptsPath(scriptName));
         }
 
