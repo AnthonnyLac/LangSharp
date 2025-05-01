@@ -2,8 +2,8 @@ name: Publish NuGet Package
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+" 
 
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
 
   test:
     uses: ./.github/workflows/tests.yml
-    needs: build 
+    needs: build
     with:
       configuration: Release
 
@@ -25,18 +25,35 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Restore dependencies
-      run: dotnet restore 
-
-    - name: Build project
-      run: dotnet build ./src/LangSharp/LangSharp.csproj -c Release
-
-    - name: List build output
-      run: ls -R ./src/LangSharp/bin/Release/net8.0
+      run: dotnet restore
 
     - name: Pack project
       run: dotnet pack ./src/LangSharp/LangSharp.csproj -c Release -o out
-      
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }} 
+        release_name: Release ${{ github.ref_name }}
+        body: |
+          This release includes the latest version of LangSharp.
+        draft: false
+        prerelease: false
+
+    - name: Upload NuGet Package to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./out/*.nupkg
+        asset_name: LangSharp.${{ github.ref_name }}.nupkg
+        asset_content_type: application/octet-stream
+
     - name: Publish to NuGet
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-      run: dotnet nuget push ./out/*.nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./out/LangSharp.${{ github.ref_name }}.nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
