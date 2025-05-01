@@ -21,6 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
+    - name: Pack project
+      run: dotnet pack src/LangSharp/LangSharp.csproj --configuration Release --output ./bin/Release
+      
     - name: Publish to NuGet
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
