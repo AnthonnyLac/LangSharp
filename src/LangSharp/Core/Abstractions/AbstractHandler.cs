@@ -4,8 +4,7 @@ namespace LangSharp.Core.Abstractions
 {
     public abstract class AbstractHandler : IHandler
     {
-        private IHandler _nextHandler;
-
+        private IHandler? _nextHandler;
 
         public IHandler SetNext(IHandler handler)
         {

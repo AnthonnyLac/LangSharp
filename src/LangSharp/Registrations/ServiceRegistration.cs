@@ -1,5 +1,4 @@
 ﻿using LangSharp.Core.Configuration;
-using LangSharp.Core.Configurations;
 using LangSharp.Core.Factorys;
 using LangSharp.Core.Handlers;
 using LangSharp.Core.Interfaces.Configurations;

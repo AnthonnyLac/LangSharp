@@ -1,7 +1,7 @@
 ﻿using LangSharp.Core.Configuration;
 using LangSharp.Core.Interfaces.Configurations;
 
-namespace LangSharp.Core.Configurations
+namespace LangSharp.Core.Services
 {
     public class ConfigurationService : IConfigurationService
     {
