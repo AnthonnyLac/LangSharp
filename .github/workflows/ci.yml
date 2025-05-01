@@ -34,3 +34,9 @@ jobs:
       
     - name: Test
       run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage"
+
+    - name: Extract coverage value
+      run: |
+        COVERAGE_FILE=$(find TestResults -name "coverage.cobertura.xml" | head -n 1)
+        COVERAGE_VALUE=$(grep -oP '(?<=line-rate=")[0-9.]+(?=")' "$COVERAGE_FILE")
+        echo "Code Coverage: $COVERAGE_VALUE" >> $GITHUB_STEP_SUMMARY
