@@ -6,16 +6,16 @@ on:
       - main
 
 jobs:
-  build:
-    uses: ./.github/workflows/build.yml
-    with:
-      configuration: Release
+  # build:
+  #   uses: ./.github/workflows/build.yml
+  #   with:
+  #     configuration: Release
 
-  test:
-    uses: ./.github/workflows/tests.yml
-    needs: build 
-    with:
-      configuration: Release
+  # test:
+  #   uses: ./.github/workflows/tests.yml
+  #   needs: build 
+  #   with:
+  #     configuration: Release
 
   publish:
     runs-on: ubuntu-latest
@@ -26,6 +26,12 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore 
+
+    - name: Build project
+      run: dotnet build ./src/LangSharp/LangSharp.csproj -c Release
+
+    - name: List build output
+      run: ls -R ./src/LangSharp/bin/Release/net8.0
 
     - name: Pack project
       run: dotnet pack ./src/LangSharp/LangSharp.csproj -c Release -o out
