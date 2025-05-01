@@ -13,7 +13,7 @@ namespace LangSharp.MicrosoftExtensionsDI
                 throw new ArgumentException("No configuration found.");
             }
 
-            ServiceRegistration.AddRequiredServices(services, configuration);
+            ServiceRegistration.AddRequiredServices(services, configuration); 
 
             return services;
         }
