@@ -15,7 +15,7 @@
     <PackageTags>python;dotnet;sdk;integration</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>1.0.9</Version>
+    <Version>1.0.10</Version>
   </PropertyGroup>
 
 
@@ -39,6 +39,20 @@
 			<Pack>True</Pack>
 			<PackagePath>Scripts\</PackagePath>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Scripts\llm.py" />
+	  <None Remove="Scripts\LLMQuery.py" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Scripts\llm.py">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Scripts\LLMQuery.py">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 </Project>
