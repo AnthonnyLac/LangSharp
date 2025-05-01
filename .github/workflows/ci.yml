@@ -33,10 +33,10 @@ jobs:
       run: dotnet build --no-restore
       
     - name: Test
-      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory TestResults
-
-    - name: Extract coverage value
       run: |
-        COVERAGE_FILE=$(find TestResults -name "coverage.cobertura.xml" | head -n 1)
-        COVERAGE_VALUE=$(grep -oP '(?<=line-rate=")[0-9.]+(?=")' "$COVERAGE_FILE")
-        echo "Code Coverage: $COVERAGE_VALUE" >> $GITHUB_STEP_SUMMARY
+        dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory TestResults | tee test-output.txt
+
+    - name: Extract test summary
+      run: |
+        TEST_SUMMARY=$(grep -oP 'Resumo do teste:.*' test-output.txt)
+        echo "$TEST_SUMMARY" >> $GITHUB_STEP_SUMMARY
