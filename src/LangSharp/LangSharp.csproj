@@ -4,7 +4,25 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>LangSharp</Title>
+    <Authors>AnthonnyDev</Authors>
+    <Description>LangSharp SDK is a .NET 8 library that leverages Python.NET to communicate with AI providers, utilizing powerful Python resources such as LangChain. This SDK provides a robust framework for executing Python commands and scripts within a .NET environment, enabling seamless integration with various AI services.</Description>
+    <Copyright>Copyright © 2025 $(Authors)</Copyright>
+    <PackageProjectUrl>https://github.com/AnthonnyLac/LangSharp</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/AnthonnyLac/LangSharp</RepositoryUrl>
+    <PackageTags>python;dotnet;sdk;integration</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="E:\source\repos\AnthonnyLac\LangSharp\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
