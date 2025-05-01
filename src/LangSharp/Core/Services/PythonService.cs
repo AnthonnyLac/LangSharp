@@ -2,12 +2,14 @@
 using LangSharp.Core.Interfaces.Services;
 using LangSharp.Utils;
 using Python.Runtime;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LangSharp.Core.Services
 {
     /// <summary>
     /// Service responsible for executing Python commands in the configured environment.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class PythonService : IPythonService
     {
         public void InitializePythonEngine()
@@ -16,9 +18,6 @@ namespace LangSharp.Core.Services
                 return;
 
             PythonEngine.Initialize();
-            var threadState = PythonEngine.BeginAllowThreads();
-
-            PythonThread.SetThreadState(threadState);
         }
 
         public void ConfigureEnvironmentPaths()
