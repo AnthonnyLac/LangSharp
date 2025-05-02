@@ -1,37 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Title>LangSharp</Title>
-    <Authors>AnthonnyDev</Authors>
-    <Description>LangSharp SDK is a .NET 8 library that leverages Python.NET to communicate with AI providers, utilizing powerful Python resources such as LangChain. This SDK provides a robust framework for executing Python commands and scripts within a .NET environment, enabling seamless integration with various AI services.</Description>
-    <Copyright>Copyright © 2025 $(Authors)</Copyright>
-    <PackageProjectUrl>https://github.com/AnthonnyLac/LangSharp</PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/AnthonnyLac/LangSharp</RepositoryUrl>
-    <PackageTags>python;dotnet;sdk;integration</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>1.0.10</Version>
-  </PropertyGroup>
-
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
-    <PackageReference Include="python" Version="3.11.7" />
-    <PackageReference Include="pythonnet" Version="3.0.5" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>LangSharp</Title>
+		<Authors>AnthonnyDev</Authors>
+		<Description>LangSharp SDK is a .NET 8 library that leverages Python.NET to communicate with AI providers, utilizing powerful Python resources such as LangChain. This SDK provides a robust framework for executing Python commands and scripts within a .NET environment, enabling seamless integration with various AI services.</Description>
+		<Copyright>Copyright © 2025 $(Authors)</Copyright>
+		<PackageProjectUrl>https://github.com/AnthonnyLac/LangSharp</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/AnthonnyLac/LangSharp</RepositoryUrl>
+		<PackageTags>python;dotnet;sdk;integration</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<Version>1.0.11</Version>
+	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="../../README.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
+		<Content Include="Scripts\**\*">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
+
 
 	<ItemGroup>
 		<None Update="Scripts\**\*">
@@ -42,17 +34,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Scripts\llm.py" />
-	  <None Remove="Scripts\LLMQuery.py" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
+		<PackageReference Include="python" Version="3.11.7" />
+		<PackageReference Include="pythonnet" Version="3.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Include="Scripts\llm.py">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	  <Content Include="Scripts\LLMQuery.py">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
+		<None Include="../../README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
+
 
 </Project>

@@ -44,7 +44,7 @@ namespace LangSharp.UnitTests.Utils
         public void GetScriptsPath_ShouldReturnCorrectPath()
         {
             var scriptName = "test.py";
-            var expectedPath = Path.Combine("scripts", scriptName);
+            var expectedPath = Path.Combine(AppContext.BaseDirectory, "scripts", scriptName);
             Assert.Equal(expectedPath, EnvironmentUtils.GetScriptsPath(scriptName));
         }
 
@@ -90,6 +90,44 @@ namespace LangSharp.UnitTests.Utils
         {
             Environment.SetEnvironmentVariable("PYTHONHOME", null, EnvironmentVariableTarget.Process);
             Assert.Null(EnvironmentUtils.GetPythonPathExecutable());
+        }
+
+        [Fact]
+        public void GetNugetLangSharpRoot_ShouldReturnCorrectPath()
+        {
+            // Arrange
+            var expectedPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                ".nuget",
+                "packages",
+                "langsharp",
+                EnvironmentConsts.GetLangSharpAssemblyVersion()
+            );
+
+            // Act
+            var actualPath = EnvironmentUtils.GetNugetLangSharpRoot();
+
+            // Assert
+            Assert.Equal(expectedPath, actualPath);
+        }
+
+        [Fact]
+        public void GetScriptsPathByPackageDir_ShouldReturnCorrectPath()
+        {
+            // Arrange
+            var scriptName = "test_script.py";
+            var expectedPath = Path.Combine(
+                EnvironmentUtils.GetNugetLangSharpRoot(),
+                "content",
+                "scripts",
+                scriptName
+            );
+
+            // Act
+            var actualPath = EnvironmentUtils.GetScriptsPathByPackageDir(scriptName);
+
+            // Assert
+            Assert.Equal(expectedPath, actualPath);
         }
     }
 }

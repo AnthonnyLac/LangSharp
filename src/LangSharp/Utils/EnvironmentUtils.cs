@@ -4,10 +4,12 @@
     {
         public static string GetNugetPackageDirPath() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".nuget", "packages");
         public static string GetNugetPythonRoot() => Path.Combine(GetNugetPackageDirPath(), "python", EnvironmentConsts.PythonVersion);
+        public static string GetNugetLangSharpRoot() => Path.Combine(GetNugetPackageDirPath(), "langsharp", EnvironmentConsts.GetLangSharpAssemblyVersion());
         public static string GetPythonPath() => Path.Combine(GetNugetPythonRoot(), "tools");
         public static string GetVenvPath() => Path.Combine(GetNugetPythonRoot(), EnvironmentConsts.VirtualEnvironment);
         public static string GetSitePackagesPath(string pythonHome) => Path.Combine(pythonHome, "Lib", "site-packages");
-        public static string GetScriptsPath(string scriptName) => Path.Combine(@"scripts", scriptName);
+        public static string GetScriptsPath(string scriptName) => Path.Combine(AppContext.BaseDirectory, @"scripts", scriptName);
+        public static string GetScriptsPathByPackageDir(string scriptName) => Path.Combine(GetNugetLangSharpRoot(), "content", @"scripts", scriptName);
         public static string GetPythonDllPath() => Path.Combine(GetPythonPath(), EnvironmentConsts.DllVersionName);
         public static string? GetPythonHomeFromEnvironment() => Environment.GetEnvironmentVariable("PYTHONHOME", EnvironmentVariableTarget.Process);
         public static string? GetPythonPathFromEnvironment() => Environment.GetEnvironmentVariable("PYTHONPATH", EnvironmentVariableTarget.Process);
