@@ -118,8 +118,7 @@ namespace LangSharp.UnitTests.Utils
             var scriptName = "test_script.py";
             var expectedPath = Path.Combine(
                 EnvironmentUtils.GetNugetLangSharpRoot(),
-                "content",
-                "scripts",
+                "Scripts",
                 scriptName
             );
 

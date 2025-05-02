@@ -9,7 +9,7 @@
         public static string GetVenvPath() => Path.Combine(GetNugetPythonRoot(), EnvironmentConsts.VirtualEnvironment);
         public static string GetSitePackagesPath(string pythonHome) => Path.Combine(pythonHome, "Lib", "site-packages");
         public static string GetScriptsPath(string scriptName) => Path.Combine(AppContext.BaseDirectory, @"scripts", scriptName);
-        public static string GetScriptsPathByPackageDir(string scriptName) => Path.Combine(GetNugetLangSharpRoot(), "content", @"scripts", scriptName);
+        public static string GetScriptsPathByPackageDir(string scriptName) => Path.Combine(GetNugetLangSharpRoot(), "Scripts", scriptName);
         public static string GetPythonDllPath() => Path.Combine(GetPythonPath(), EnvironmentConsts.DllVersionName);
         public static string? GetPythonHomeFromEnvironment() => Environment.GetEnvironmentVariable("PYTHONHOME", EnvironmentVariableTarget.Process);
         public static string? GetPythonPathFromEnvironment() => Environment.GetEnvironmentVariable("PYTHONPATH", EnvironmentVariableTarget.Process);
