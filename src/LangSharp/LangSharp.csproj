@@ -15,7 +15,7 @@
 		<PackageTags>python;dotnet;sdk;integration</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-		<Version>1.0.11</Version>
+		<Version>1.0.12</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -27,7 +27,7 @@
 
 	<ItemGroup>
 		<None Update="Scripts\**\*">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 			<Pack>True</Pack>
 			<PackagePath>Scripts\</PackagePath>
 		</None>
