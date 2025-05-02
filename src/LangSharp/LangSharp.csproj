@@ -15,21 +15,14 @@
 		<PackageTags>python;dotnet;sdk;integration</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-		<Version>1.0.12</Version>
+		<Version>1.0.13</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Content Include="Scripts\**\*">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
-
-	<ItemGroup>
 		<None Update="Scripts\**\*">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<Pack>True</Pack>
-			<PackagePath>Scripts\</PackagePath>
+			<PackagePath>\</PackagePath>
 		</None>
 	</ItemGroup>
 
