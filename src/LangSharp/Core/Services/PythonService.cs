@@ -18,6 +18,7 @@ namespace LangSharp.Core.Services
                 return;
 
             PythonEngine.Initialize();
+            PythonEngine.BeginAllowThreads();
         }
 
         public void ConfigureEnvironmentPaths()
