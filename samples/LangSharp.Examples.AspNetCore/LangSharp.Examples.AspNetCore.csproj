@@ -15,9 +15,9 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\LangSharp\LangSharp.csproj" />
+		<ProjectReference Include="..\..\src\LangSharp\LangSharp.csproj" />
 	</ItemGroup>
 	
 </Project>

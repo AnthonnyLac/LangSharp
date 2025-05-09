@@ -2,12 +2,14 @@
 using LangSharp.Core.Interfaces.Services;
 using LangSharp.Utils;
 using Python.Runtime;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LangSharp.Core.Services
 {
     /// <summary>
     /// Service responsible for executing Python commands in the configured environment.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class PythonService : IPythonService
     {
         public void InitializePythonEngine()
@@ -16,9 +18,7 @@ namespace LangSharp.Core.Services
                 return;
 
             PythonEngine.Initialize();
-            var threadState = PythonEngine.BeginAllowThreads();
-
-            PythonThread.SetThreadState(threadState);
+            PythonEngine.BeginAllowThreads();
         }
 
         public void ConfigureEnvironmentPaths()
@@ -39,7 +39,7 @@ namespace LangSharp.Core.Services
 
         public string ExecuteScript(AbstractScript scriptModel)
         {
-            var pythonScriptPath = EnvironmentUtils.GetScriptsPath(scriptModel.Name);
+            var pythonScriptPath = GetScriptPath(scriptModel.Name);
 
             using (Py.GIL())
             {
@@ -144,6 +144,23 @@ namespace LangSharp.Core.Services
 
             Environment.SetEnvironmentVariable("PYTHONHOME", venvPath, EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable("PYTHONPATH", sitePackagesPath, EnvironmentVariableTarget.Process);
+        }
+
+        public string GetScriptPath(string scriptName)
+        {
+            var scriptPath = EnvironmentUtils.GetScriptsPath(scriptName);
+
+            if (!File.Exists(scriptPath))
+            {
+                scriptPath = EnvironmentUtils.GetScriptsPathByPackageDir(scriptName);
+
+                if (!File.Exists(scriptPath))
+                {
+                    throw new FileNotFoundException($"Script '{scriptName}' not found in any of the verified paths.");
+                }
+            }
+
+            return scriptPath;
         }
     }
 }

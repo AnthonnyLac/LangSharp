@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{CCB1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangSharp.Examples.AspNetCore", "samples\LangSharp.Examples.AspNetCore\LangSharp.Examples.AspNetCore.csproj", "{AEF1A62D-B74D-1F64-ED7F-A80AB81D4190}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{62A18702-E2EE-4F35-B0B8-C75573DA08C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangSharp.UnitTests", "tests\LangSharp.UnitTests\LangSharp.UnitTests.csproj", "{93E6989F-B24D-EC13-A125-FBC404FF580C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,10 @@ Global
 		{AEF1A62D-B74D-1F64-ED7F-A80AB81D4190}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEF1A62D-B74D-1F64-ED7F-A80AB81D4190}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEF1A62D-B74D-1F64-ED7F-A80AB81D4190}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93E6989F-B24D-EC13-A125-FBC404FF580C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93E6989F-B24D-EC13-A125-FBC404FF580C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93E6989F-B24D-EC13-A125-FBC404FF580C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93E6989F-B24D-EC13-A125-FBC404FF580C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +40,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{5DA14FBB-4F80-4CB0-9D34-1E80E2B430BC} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{AEF1A62D-B74D-1F64-ED7F-A80AB81D4190} = {CCB10AAD-E064-4817-8AF3-29F22B4E19CF}
+		{93E6989F-B24D-EC13-A125-FBC404FF580C} = {62A18702-E2EE-4F35-B0B8-C75573DA08C5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F11B4EC-1B39-44AC-8898-1DA920C3561A}
