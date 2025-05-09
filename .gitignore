@@ -366,3 +366,6 @@ FodyWeavers.xsd
 # Environment
 .env
 /env
+
+# Database
+*.db
