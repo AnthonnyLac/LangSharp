@@ -1,18 +1,31 @@
-import argparse
-import openai
 from langchain.chat_models import init_chat_model
-import os
-from dotenv import load_dotenv
 
 
-class ChatOpenAI:
-    def __init__(self, model="gpt-4o-mini", temperature=0.7, api_key=None):
+class ChatModel:
+    def __init__(self, model="gpt-4o-mini", temperature=0.7, api_key=None) -> None:        
+        """
+        Initialize the ChatModel with the given model, temperature and API key.
+
+        Args:
+            model (str, optional): The model to use. Defaults to "gpt-4o-mini".
+            temperature (float, optional): The temperature to use. Defaults to 0.7.
+            api_key (str, optional): The API key to use. Defaults to None.
+        """
         self.model = model
         self.temperature = temperature
         self.api_key = api_key
         self.model = init_chat_model(self.model, api_key=self.api_key, temperature=self.temperature)
 
-    def call_openai_api(self, prompt):
+    def run(self, prompt: str) -> str:
+        """
+        Generates a response from the chat model based on the provided prompt.
+
+        Args:
+            prompt (str): The input text for which the model generates a response.
+
+        Returns:
+            str: The generated content from the chat model.
+        """
         response = self.model.invoke(
             input=[
                 {"role": "system", "content": "You are a helpful assistant."},
@@ -22,7 +35,20 @@ class ChatOpenAI:
 
         return response.content
 
-def CallOpenIALangSharp(api_key, prompt, model, temperature=0.7):
+
+def call_llm_langsharp(api_key: str, prompt: str, model: str, temperature=0.7) -> str:
+    """
+    Calls the LLM LangSharp function with the given arguments.
+
+    Args:
+        api_key (str): The API key to use to access the LLM.
+        prompt (str): The text prompt to send to the LLM.
+        model (str): The model to use to generate the response.
+        temperature (float, optional): The temperature to use to generate the response. Defaults to 0.7.
+
+    Returns:
+        str: The generated content from the chat model.
+    """
     try:
         if not api_key or not api_key.strip():
             raise ValueError("No API key provided")
@@ -33,43 +59,9 @@ def CallOpenIALangSharp(api_key, prompt, model, temperature=0.7):
         if not model or not model.strip():
             raise ValueError("No model provided")
 
-        openai_client = ChatOpenAI(
+        openai_client = ChatModel(
             model=model, temperature=temperature, api_key=api_key
         )
-        return openai_client.call_openai_api(prompt)
+        return openai_client.run(prompt)
     except Exception as e:
         return str(e)
-
-
-def main(args):
-    load_dotenv(override=True)
-
-    print(args)
-
-    api_key = (
-        args.api_key
-        or os.getenv("OPENAI_API_KEY")
-    )
-    if not api_key:
-        raise ValueError("No API key provided")
-
-    openai_client = ChatOpenAI(
-        model=args.model, temperature=args.temperature, api_key=api_key
-    )
-    print(openai_client.call_openai_api(args.prompt))
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument("-p", "--prompt", type=str, help="The query to run", required=True)
-    parser.add_argument("-k", "--api_key", type=str, help="The OpenAI API key")
-    parser.add_argument("-kp", "--api_key_path", type=str, help="The path to the file containing the OpenAI API key")
-    parser.add_argument("-m", "--model", type=str, help="The OpenAI model to use", default="gpt-4o-mini")
-    parser.add_argument("-t", "--temperature", type=float, help="The temperature to use for the OpenAI model", default=0.7)
-
-    main(parser.parse_args())
-
-
-    
-

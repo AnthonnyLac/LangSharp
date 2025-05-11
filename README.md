@@ -7,6 +7,7 @@ LangSharp SDK is a .NET 8 library that leverages Python.NET to communicate with 
 - [Introduction](#introduction)
 - [Features](#features)
 - [Getting Started](#getting-started)
+  - [Requisites] (#requisites)
   - [Installation](#installation)
   - [Configuration](#configuration)
 - [Usage](#usage)
@@ -23,6 +24,11 @@ LangSharp SDK is designed to bridge the gap between .NET applications and Python
 - **Chain Requests**: Create chains through Python to make requests to AI providers.
 
 ## Getting Started
+
+### Requisites
+
+Python.NET requires Python 3.11.7 to be installed in the system.
+
 
 ### Installation
 
