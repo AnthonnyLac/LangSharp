@@ -11,6 +11,7 @@
         string GetVenvPath();
         void ConfigurePythonEnvironment(string pythonHome, string sitePackagesPath, string pythonDllPath);
         void ConfigurePythonEnvironment(string pythonHome, string sitePackagesPath);
+        string GetDirectoryName(string? path);
         bool IsValidDirectory(string? path);
         bool IsFileExist(string? path);
     }

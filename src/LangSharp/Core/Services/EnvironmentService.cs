@@ -70,6 +70,10 @@ namespace LangSharp.Core.Services
             Environment.SetEnvironmentVariable("PYTHONHOME", pythonHome, EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable("PYTHONPATH", sitePackagesPath, EnvironmentVariableTarget.Process);
         }
+        public string GetDirectoryName(string? path)
+        {
+            return Path.GetDirectoryName(path) ?? string.Empty;
+        }
 
         public bool IsValidDirectory(string? path)
         {
@@ -80,5 +84,7 @@ namespace LangSharp.Core.Services
         {
             return !string.IsNullOrWhiteSpace(path) && File.Exists(path);
         }
+
+   
     }
 }

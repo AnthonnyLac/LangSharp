@@ -52,7 +52,7 @@ namespace LangSharp.Core.Services
             using (_pythonRuntime.AcquireGIL())
             {
                 dynamic sys = _pythonRuntime.Import("sys");
-                sys.path.append(Path.GetDirectoryName(pythonScriptPath));
+                sys.path.append(_env.GetDirectoryName(pythonScriptPath));
 
                 dynamic module = _pythonRuntime.Import(scriptModel.ModuleName);
                 dynamic method = module.GetAttr(scriptModel.FunctionName);
