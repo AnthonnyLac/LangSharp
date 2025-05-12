@@ -9,6 +9,7 @@
         string GetScriptsPath(string scriptName);
         string GetScriptsPathByPackageDir(string scriptName);
         string GetVenvPath();
+        string? GetSitePackagesPathFromPythonHome();
         void ConfigurePythonEnvironment(string pythonHome, string sitePackagesPath, string pythonDllPath);
         void ConfigurePythonEnvironment(string pythonHome, string sitePackagesPath);
         string GetDirectoryName(string? path);

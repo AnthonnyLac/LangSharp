@@ -58,6 +58,20 @@ namespace LangSharp.Core.Services
                 EnvironmentConsts.VirtualEnvironment);
         }
 
+        public string? GetSitePackagesPathFromPythonHome()
+        {
+            var pythonHome = Environment.GetEnvironmentVariable("PYTHONHOME", EnvironmentVariableTarget.Process);
+
+            if (string.IsNullOrEmpty(pythonHome))
+                return null;
+
+            var isVirtualEnv = pythonHome.EndsWith(EnvironmentConsts.VirtualEnvironment, StringComparison.OrdinalIgnoreCase);
+
+            return isVirtualEnv  
+                ? Path.Combine(pythonHome, "Lib", "site-packages")
+                : Path.Combine(pythonHome, "Lib");
+        }
+
         public void ConfigurePythonEnvironment(string pythonHome, string sitePackagesPath, string pythonDllPath)
         {
             Environment.SetEnvironmentVariable("PYTHONNET_PYDLL", pythonDllPath, EnvironmentVariableTarget.Process);
@@ -69,6 +83,7 @@ namespace LangSharp.Core.Services
         {
             Environment.SetEnvironmentVariable("PYTHONHOME", pythonHome, EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable("PYTHONPATH", sitePackagesPath, EnvironmentVariableTarget.Process);
+
         }
         public string GetDirectoryName(string? path)
         {
