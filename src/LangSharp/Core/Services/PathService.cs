@@ -13,9 +13,12 @@ namespace LangSharp.Core.Services
 
         public string GetPythonPath()
         {
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                ".nuget", "packages", "python", EnvironmentConsts.PythonVersion, "tools");
+            var nugetPackagesPath = Environment.GetEnvironmentVariable("NUGET_PACKAGES") ??
+                          Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".nuget", "packages");
+
+            var pythonPath = Path.Combine(nugetPackagesPath, "python", EnvironmentConsts.PythonVersion, "tools");
+
+            return pythonPath;
         }
 
         public string GetPythonPathExecutable()
