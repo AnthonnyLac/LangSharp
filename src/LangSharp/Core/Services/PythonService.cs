@@ -14,13 +14,11 @@ namespace LangSharp.Core.Services
     {
         private readonly IPythonRuntime _pythonRuntime;
         private readonly IEnvironmentService _env;
-        private readonly ILogger<PythonService> _logger;
 
-        public PythonService(IPythonRuntime pythonRuntime, IEnvironmentService environmentService, ILogger<PythonService> logger)
+        public PythonService(IPythonRuntime pythonRuntime, IEnvironmentService environmentService)
         {
             _pythonRuntime = pythonRuntime;
             _env = environmentService;
-            _logger = logger;
         }
 
         public void InitializePythonEngine()
@@ -70,23 +68,19 @@ namespace LangSharp.Core.Services
             {
                 var pythonDllPath = _env.GetPythonDllPath();
                 if (string.IsNullOrEmpty(pythonDllPath) || !_env.IsFileExist(pythonDllPath))
-                {
-                    _logger.LogError("Python DLL not found.");
-                    return false;
-                }
+                    throw new InvalidDataException("Python DLL not found.");
+
 
                 var pythonHome = _env.GetPythonPath();
                 if (string.IsNullOrEmpty(pythonHome) || !_env.IsValidDirectory(pythonHome))
-                {
-                   _logger.LogError("Python directory not found.");
-                    return false;
-                }
+                    throw new InvalidDataException("Python directory not found.");
+
 
                 return true;
             }
             catch (Exception ex)
             {
-               _logger.LogError($"Error checking Python installation: {ex.Message}");
+                Console.Error.WriteLine($"Error checking Python installation: {ex.Message}");
                 return false;
             }
         }
