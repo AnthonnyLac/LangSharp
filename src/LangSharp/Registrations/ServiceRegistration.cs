@@ -1,8 +1,10 @@
 ﻿using LangSharp.Core.Configuration;
 using LangSharp.Core.Factorys;
 using LangSharp.Core.Handlers;
+using LangSharp.Core.Infrastructure;
 using LangSharp.Core.Interfaces.Configurations;
 using LangSharp.Core.Interfaces.Handlers;
+using LangSharp.Core.Interfaces.Infrastructure;
 using LangSharp.Core.Interfaces.Services;
 using LangSharp.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +32,10 @@ namespace LangSharp.Registrations
             //add services
             services.TryAddScoped<ILangSharpService, LangSharpService>();
             services.TryAddScoped<IPythonService, PythonService>();
+            services.TryAddScoped<IEnvironmentService, EnvironmentService>();
+
+            //Add Infra
+            services.TryAddScoped<IPythonRuntime, PythonRuntime>();
 
             //Add SDK Config
             services.TryAddSingleton(configuration);
