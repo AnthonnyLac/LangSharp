@@ -15,7 +15,7 @@
 		<PackageTags>python;dotnet;sdk;integration</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-		<Version>1.0.16</Version>
+		<Version>1.0.17</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -30,6 +30,7 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.4" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
+		<PackageReference Include="NuGet.Configuration" Version="6.13.2" />
 		<PackageReference Include="python" Version="3.11.7" />
 		<PackageReference Include="pythonnet" Version="3.0.5" />
 	</ItemGroup>
