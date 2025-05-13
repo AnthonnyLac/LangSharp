@@ -89,6 +89,44 @@ string aiResponse = await service.CallAIChatAsync("What is the weather like toda
 Console.WriteLine(aiResponse);
 ```
 
+## Running in Docker Containers
+
+To run the LangSharp SDK in a Docker container, ensure Python and required dependencies are properly configured. Below are examples for Linux and Windows containers.
+
+### Linux
+
+Install Python 3.11.7 and development headers:
+
+```dockerfile
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER root
+WORKDIR /app
+
+# Install Python 3.11 and dependencies
+RUN apt update && \
+    apt install -y \
+    python3.11 \
+    python3.11-dev \
+    python3-pip \
+    libpython3.11-dev \
+    && rm -rf /var/lib/apt/lists/*
+```
+
+### Windows
+
+Copy the Python package from the global NuGet cache into the publish folder:
+
+```dockerfile
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./LangSharp.Examples.AspNetCore.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN mkdir -p /app/publish/root/.nuget/packages && \
+    cp -r /root/.nuget/packages/python /app/publish/root/.nuget/packages/
+```
+
+> ?? Note: This is required because the default NuGet global packages path (`/root/.nuget/packages`) is not available at runtime. Copying it ensures that Python.NET can locate the Python package during execution.
+
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.

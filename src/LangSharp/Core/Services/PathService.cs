@@ -9,13 +9,27 @@ namespace LangSharp.Core.Services
     {
         public string GetNuggetPath() 
         {
+            var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER", EnvironmentVariableTarget.Process);
+
+            if (!string.IsNullOrEmpty(isDocker) && bool.Parse(isDocker) && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return Path.Combine(Environment.CurrentDirectory, "root", ".nuget", "packages");
+            }
+
             ISettings settings = Settings.LoadDefaultSettings(null);
-            string nugetPath = SettingsUtility.GetGlobalPackagesFolder(settings);
+            var nugetPath = SettingsUtility.GetGlobalPackagesFolder(settings);
 
             return nugetPath;
         }
         public string GetPythonDllPath()
         {
+            var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER", EnvironmentVariableTarget.Process);
+
+            if (!string.IsNullOrEmpty(isDocker) && bool.Parse(isDocker) && RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return Path.Combine(Path.DirectorySeparatorChar.ToString(), "usr", "lib", "x86_64-linux-gnu", "libpython3.11.so.1.0");
+            }
+
             return Path.Combine(GetPythonPath(), EnvironmentConsts.DllVersionName);
         }
 
