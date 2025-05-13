@@ -2,6 +2,7 @@
 {
     public interface IPathService
     {
+        string GetNuggetPath();
         string GetPythonPath();
         string GetPythonDllPath();
         string GetPythonPathExecutable();

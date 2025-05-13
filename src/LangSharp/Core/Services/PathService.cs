@@ -1,11 +1,19 @@
 ﻿using LangSharp.Core.Interfaces.Services;
 using LangSharp.Utils;
+using NuGet.Configuration;
 using System.Runtime.InteropServices;
 
 namespace LangSharp.Core.Services
 {
     public class PathService : IPathService
     {
+        public string GetNuggetPath() 
+        {
+            ISettings settings = Settings.LoadDefaultSettings(null);
+            string nugetPath = SettingsUtility.GetGlobalPackagesFolder(settings);
+
+            return nugetPath;
+        }
         public string GetPythonDllPath()
         {
             return Path.Combine(GetPythonPath(), EnvironmentConsts.DllVersionName);
@@ -13,10 +21,9 @@ namespace LangSharp.Core.Services
 
         public string GetPythonPath()
         {
-            var nugetPackagesPath = Environment.GetEnvironmentVariable("NUGET_PACKAGES") ??
-                          Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".nuget", "packages");
+            string nugetPath = GetNuggetPath();
 
-            var pythonPath = Path.Combine(nugetPackagesPath, "python", EnvironmentConsts.PythonVersion, "tools");
+            var pythonPath = Path.Combine(nugetPath, "python", EnvironmentConsts.PythonVersion, "tools");
 
             return pythonPath;
         }
@@ -42,10 +49,11 @@ namespace LangSharp.Core.Services
 
         public string GetScriptsPathByPackageDir(string scriptName)
         {
+            var nuggetPath = GetNuggetPath();
+
             return Path.Combine(
               Path.Combine(
-                  Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                  ".nuget", "packages", "langsharp", EnvironmentConsts.GetLangSharpAssemblyVersion()
+                  nuggetPath, "langsharp", EnvironmentConsts.GetLangSharpAssemblyVersion()
               ),
               "Scripts", scriptName);
         }
@@ -71,9 +79,10 @@ namespace LangSharp.Core.Services
 
         public string GetVenvPath()
         {
+            var nuggetPath = GetNuggetPath();
+
             return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                ".nuget", "packages", "python", EnvironmentConsts.PythonVersion,
+                nuggetPath, "python", EnvironmentConsts.PythonVersion,
                 EnvironmentConsts.VirtualEnvironment);
         }
 
