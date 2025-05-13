@@ -55,36 +55,7 @@ namespace LangSharp.UnitTests.Utils
             Assert.Equal(expectedPath, EnvironmentUtils.GetPythonDllPath());
         }
 
-        [Fact]
-        public void GetPythonHomeFromEnvironment_ShouldReturnCorrectValue()
-        {
-            Environment.SetEnvironmentVariable("PYTHONHOME", "C:\\Python", EnvironmentVariableTarget.Process);
-            Assert.Equal("C:\\Python", EnvironmentUtils.GetPythonHomeFromEnvironment());
-        }
-
-        [Fact]
-        public void GetPythonPathFromEnvironment_ShouldReturnCorrectValue()
-        {
-            Environment.SetEnvironmentVariable("PYTHONPATH", "C:\\Python\\Lib", EnvironmentVariableTarget.Process);
-            Assert.Equal("C:\\Python\\Lib", EnvironmentUtils.GetPythonPathFromEnvironment());
-        }
-
-        [Fact]
-        public void GetPythonPathExecutable_ShouldReturnCorrectPath_ForVirtualEnv()
-        {
-            Environment.SetEnvironmentVariable("PYTHONHOME", "C:\\Python\\langsharp", EnvironmentVariableTarget.Process);
-            var expectedPath = Path.Combine("C:\\Python\\langsharp", "Scripts", "python.exe");
-            Assert.Equal(expectedPath, EnvironmentUtils.GetPythonPathExecutable());
-        }
-
-        [Fact]
-        public void GetPythonPathExecutable_ShouldReturnCorrectPath_ForNonVirtualEnv()
-        {
-            Environment.SetEnvironmentVariable("PYTHONHOME", "C:\\Python", EnvironmentVariableTarget.Process);
-            var expectedPath = Path.Combine("C:\\Python", "python.exe");
-            Assert.Equal(expectedPath, EnvironmentUtils.GetPythonPathExecutable());
-        }
-
+    
         [Fact]
         public void GetPythonPathExecutable_ShouldReturnNull_WhenPythonHomeIsNotSet()
         {

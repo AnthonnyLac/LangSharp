@@ -33,6 +33,8 @@ namespace LangSharp.Registrations
             services.TryAddScoped<ILangSharpService, LangSharpService>();
             services.TryAddScoped<IPythonService, PythonService>();
             services.TryAddScoped<IEnvironmentService, EnvironmentService>();
+            services.TryAddScoped<IPathService, PathService>();
+            services.TryAddScoped<IFileSystemService, FileSystemService>();
 
             //Add Infra
             services.TryAddScoped<IPythonRuntime, PythonRuntime>();
