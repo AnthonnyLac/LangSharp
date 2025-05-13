@@ -95,7 +95,7 @@ To run the LangSharp SDK in a Docker container, ensure Python and required depen
 
 ### Linux
 
-Install Python 3.11.7 and development headers:
+Install Python 3.11.x:
 
 ```dockerfile
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
@@ -106,9 +106,8 @@ WORKDIR /app
 RUN apt update && \
     apt install -y \
     python3.11 \
-    python3.11-dev \
     python3-pip \
-    libpython3.11-dev \
+    python3-venv \
     && rm -rf /var/lib/apt/lists/*
 ```
 

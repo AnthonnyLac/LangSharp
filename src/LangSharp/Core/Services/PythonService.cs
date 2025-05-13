@@ -127,12 +127,29 @@ namespace LangSharp.Core.Services
         public void CreateVirtualEnv()
         {
             string venvPath = _pathService.GetVenvPath();
+            string pythonExecutable = _pathService.GetPythonPathExecutable();
 
-            using (_pythonRuntime.AcquireGIL())
+            var startInfo = new System.Diagnostics.ProcessStartInfo
             {
-                dynamic subprocess = _pythonRuntime.Import("subprocess");
-                subprocess.check_call(new[] { "python", "-m", "venv", venvPath });
-            }
+                FileName = pythonExecutable,
+                Arguments = $"-m venv \"{venvPath}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using var process = System.Diagnostics.Process.Start(startInfo);
+
+            if (process == null)
+                throw new InvalidOperationException("Could not start the process to create the virtual environment.");
+
+            string output = process.StandardOutput.ReadToEnd();
+            string error = process.StandardError.ReadToEnd();
+            process.WaitForExit();
+
+            if (process.ExitCode != 0)
+                throw new Exception($"Error creating virtual environment: {error}\n{output}");
         }
 
         public bool IsVirtualEnvCreated()
