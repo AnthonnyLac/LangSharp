@@ -2,6 +2,7 @@
 using LangSharp.Core.Interfaces.Infrastructure;
 using LangSharp.Core.Interfaces.Services;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 
 namespace LangSharp.Core.Services
 {
@@ -125,6 +126,24 @@ namespace LangSharp.Core.Services
         }
 
         public void CreateVirtualEnv()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                CreateVirtualEnvLinux();
+                return;
+            }
+
+            string venvPath = _pathService.GetVenvPath();
+
+            using (_pythonRuntime.AcquireGIL())
+            {
+                dynamic subprocess = _pythonRuntime.Import("subprocess");
+                subprocess.check_call(new[] { "python", "-m", "venv", venvPath });
+            }
+
+        }
+
+        private void CreateVirtualEnvLinux() 
         {
             string venvPath = _pathService.GetVenvPath();
             string pythonExecutable = _pathService.GetPythonPathExecutable();
