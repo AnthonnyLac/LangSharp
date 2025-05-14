@@ -134,11 +134,14 @@ namespace LangSharp.Core.Services
             }
 
             string venvPath = _pathService.GetVenvPath();
+            string pythonExecutable = _pathService.GetPythonPathExecutable();
+
 
             using (_pythonRuntime.AcquireGIL())
             {
+
                 dynamic subprocess = _pythonRuntime.Import("subprocess");
-                subprocess.check_call(new[] { "python", "-m", "venv", venvPath });
+                subprocess.check_call(new[] { pythonExecutable, "-m", "venv", venvPath});
             }
 
         }
@@ -178,10 +181,10 @@ namespace LangSharp.Core.Services
 
         public void ActivateVirtualEnv()
         {
-            var venvPath = _pathService.GetVenvPath();
+            var venvPath = _pathService.GetVenvPath(); 
             var sitePackagesPath = _pathService.GetSitePackagesPath(venvPath);
 
-            _env.ConfigurePythonEnvironment(venvPath, sitePackagesPath);
+            _env.ConfigurePythonVirtualEnvironment(sitePackagesPath, true);
         }
 
         public string GetScriptPath(string scriptName)

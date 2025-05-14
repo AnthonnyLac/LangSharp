@@ -50,18 +50,25 @@ namespace LangSharp.Core.Services
             return pythonPath;
         }
 
+        public string GetPythonVenvPath()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                return Path.Combine(Path.DirectorySeparatorChar.ToString(), "usr");
+
+            string nugetPath = GetNuggetPath();
+
+            var pythonPath = Path.Combine(nugetPath, "python", EnvironmentConsts.PythonVersion, EnvironmentConsts.VirtualEnvironment);
+
+            return pythonPath;
+        }
+
         public string GetPythonPathExecutable()
         {
-            var pythonHome = Environment.GetEnvironmentVariable("PYTHONHOME", EnvironmentVariableTarget.Process);
+            var isVenv = Environment.GetEnvironmentVariable("LANGSHARP_IS_VENV", EnvironmentVariableTarget.Process);
 
-            if (string.IsNullOrEmpty(pythonHome))
-                return string.Empty;
-
-            var isVirtualEnv = pythonHome.EndsWith(EnvironmentConsts.VirtualEnvironment, StringComparison.OrdinalIgnoreCase);
-
-            return isVirtualEnv
-                ? GetPythonPathExecutableForVenv(pythonHome)
-                : GetPythonPathExecutableForStandardInstallation(pythonHome);
+            return !string.IsNullOrEmpty(isVenv) && bool.Parse(isVenv)
+                ? GetPythonPathExecutableForVenv(GetPythonVenvPath())
+                : GetPythonPathExecutableForStandardInstallation(GetPythonPath());
         }
 
         public string GetScriptsPath(string scriptName)
@@ -90,8 +97,6 @@ namespace LangSharp.Core.Services
 
         public string GetSitePackagesPathFromPythonHome()
         {
-
-
             var pythonHome = Environment.GetEnvironmentVariable("PYTHONHOME", EnvironmentVariableTarget.Process);
 
             if (string.IsNullOrEmpty(pythonHome))
@@ -100,10 +105,10 @@ namespace LangSharp.Core.Services
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 return GetSitePackagesPath(pythonHome);
 
-            var isVirtualEnv = pythonHome.EndsWith(EnvironmentConsts.VirtualEnvironment, StringComparison.OrdinalIgnoreCase);
+            var isVirtualEnv = Environment.GetEnvironmentVariable("LANGSHARP_IS_VENV", EnvironmentVariableTarget.Process);
 
-            return isVirtualEnv
-                ? Path.Combine(pythonHome, "Lib", "site-packages")
+            return  !string.IsNullOrEmpty(isVirtualEnv) && bool.Parse(isVirtualEnv)
+                ? Path.Combine(GetPythonVenvPath(), "Lib", "site-packages")
                 : Path.Combine(pythonHome, "Lib");
         }
 
