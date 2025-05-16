@@ -3,6 +3,6 @@
     public interface IEnvironmentService
     {
         void ConfigurePythonEnvironment(string pythonHome, string sitePackagesPath, string pythonDllPath);
-        void ConfigurePythonEnvironment(string pythonHome, string sitePackagesPath);
+        void ConfigurePythonVirtualEnvironment(string sitePackagesPath, bool isVenv);
     }
 }

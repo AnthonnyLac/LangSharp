@@ -1,21 +1,13 @@
 ﻿using LangSharp.Core.Interfaces.Services;
 using LangSharp.Utils;
 using NuGet.Configuration;
-using System.Runtime.InteropServices;
 
 namespace LangSharp.Core.Services
 {
     public class PathService : IPathService
     {
-        public string GetNuggetPath() 
+        public string GetNuggetPath()
         {
-            var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER", EnvironmentVariableTarget.Process);
-
-            if (!string.IsNullOrEmpty(isDocker) && bool.Parse(isDocker) && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return Path.Combine(Environment.CurrentDirectory, "root", ".nuget", "packages");
-            }
-
             ISettings settings = Settings.LoadDefaultSettings(null);
             var nugetPath = SettingsUtility.GetGlobalPackagesFolder(settings);
 
@@ -23,13 +15,6 @@ namespace LangSharp.Core.Services
         }
         public string GetPythonDllPath()
         {
-            var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER", EnvironmentVariableTarget.Process);
-
-            if (!string.IsNullOrEmpty(isDocker) && bool.Parse(isDocker) && RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                return Path.Combine(Path.DirectorySeparatorChar.ToString(), "usr", "lib", "x86_64-linux-gnu", "libpython3.11.so.1.0");
-            }
-
             return Path.Combine(GetPythonPath(), EnvironmentConsts.DllVersionName);
         }
 
@@ -42,23 +27,27 @@ namespace LangSharp.Core.Services
             return pythonPath;
         }
 
+        public string GetPythonVenvPath()
+        {
+            string nugetPath = GetNuggetPath();
+
+            var pythonPath = Path.Combine(nugetPath, "python", EnvironmentConsts.PythonVersion, EnvironmentConsts.VirtualEnvironment);
+
+            return pythonPath;
+        }
+
         public string GetPythonPathExecutable()
         {
-            var pythonHome = Environment.GetEnvironmentVariable("PYTHONHOME", EnvironmentVariableTarget.Process);
+            var isVenv = Environment.GetEnvironmentVariable("LANGSHARP_IS_VENV", EnvironmentVariableTarget.Process);
 
-            if (string.IsNullOrEmpty(pythonHome))
-                return string.Empty;
-
-            var isVirtualEnv = pythonHome.EndsWith(EnvironmentConsts.VirtualEnvironment, StringComparison.OrdinalIgnoreCase);
-
-            return isVirtualEnv
-                ? GetPythonPathExecutableForVenv(pythonHome)
-                : GetPythonPathExecutableForStandardInstallation(pythonHome);
+            return !string.IsNullOrEmpty(isVenv) && bool.Parse(isVenv)
+                ? GetPythonPathExecutableForVenv(GetPythonVenvPath())
+                : GetPythonPathExecutableForStandardInstallation(GetPythonPath());
         }
 
         public string GetScriptsPath(string scriptName)
         {
-            return Path.Combine(AppContext.BaseDirectory, "scripts", scriptName);
+            return Path.Combine(AppContext.BaseDirectory, "Scripts", scriptName);
         }
 
         public string GetScriptsPathByPackageDir(string scriptName)
@@ -77,17 +66,17 @@ namespace LangSharp.Core.Services
             return Path.Combine(basePath, "Lib", "site-packages");
         }
 
-        public string GetSitePackagesPathFromPythonHome()
+        public string GetSitePackagesPath()
         {
             var pythonHome = Environment.GetEnvironmentVariable("PYTHONHOME", EnvironmentVariableTarget.Process);
 
             if (string.IsNullOrEmpty(pythonHome))
                 return string.Empty;
 
-            var isVirtualEnv = pythonHome.EndsWith(EnvironmentConsts.VirtualEnvironment, StringComparison.OrdinalIgnoreCase);
+            var isVirtualEnv = Environment.GetEnvironmentVariable("LANGSHARP_IS_VENV", EnvironmentVariableTarget.Process);
 
-            return isVirtualEnv
-                ? Path.Combine(pythonHome, "Lib", "site-packages")
+            return  !string.IsNullOrEmpty(isVirtualEnv) && bool.Parse(isVirtualEnv)
+                ? Path.Combine(GetPythonVenvPath(), "Lib", "site-packages")
                 : Path.Combine(pythonHome, "Lib");
         }
 
@@ -107,22 +96,12 @@ namespace LangSharp.Core.Services
 
         private static string GetPythonPathExecutableForVenv(string pythonHome)
         {
-            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) switch
-            {
-                true => Path.Combine(pythonHome, "Scripts", "python.exe"),
-                false when RuntimeInformation.IsOSPlatform(OSPlatform.Linux) => Path.Combine(pythonHome, "bin", "python"),
-                _ => throw new PlatformNotSupportedException("Unsupported operating system.")
-            };
+            return Path.Combine(pythonHome, "Scripts", "python.exe");
         }
 
         private static string GetPythonPathExecutableForStandardInstallation(string pythonHome)
         {
-            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) switch
-            {
-                true => Path.Combine(pythonHome, "python.exe"),
-                false when RuntimeInformation.IsOSPlatform(OSPlatform.Linux) => Path.Combine(pythonHome, "bin", "python"),
-                _ => throw new PlatformNotSupportedException("Unsupported operating system.")
-            };
+            return Path.Combine(pythonHome, "python.exe");
         }
 
     }

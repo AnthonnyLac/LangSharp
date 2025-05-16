@@ -10,7 +10,7 @@
         string GetVenvPath();
         string GetScriptsPath(string scriptName);
         string GetScriptsPathByPackageDir(string scriptName);
-        string GetSitePackagesPathFromPythonHome();
+        string GetSitePackagesPath();
         string GetDirectoryName(string? path);
     }
 }
