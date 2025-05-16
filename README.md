@@ -111,21 +111,6 @@ RUN apt update && \
     && rm -rf /var/lib/apt/lists/*
 ```
 
-### Windows
-
-Copy the Python package from the global NuGet cache into the publish folder:
-
-```dockerfile
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./LangSharp.Examples.AspNetCore.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-RUN mkdir -p /app/publish/root/.nuget/packages && \
-    cp -r /root/.nuget/packages/python /app/publish/root/.nuget/packages/
-```
-
-> ?? Note: This is required because the default NuGet global packages path (`/root/.nuget/packages`) is not available at runtime. Copying it ensures that Python.NET can locate the Python package during execution.
-
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.

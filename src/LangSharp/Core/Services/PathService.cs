@@ -66,7 +66,7 @@ namespace LangSharp.Core.Services
             return Path.Combine(basePath, "Lib", "site-packages");
         }
 
-        public string GetSitePackagesPathFromPythonHome()
+        public string GetSitePackagesPath()
         {
             var pythonHome = Environment.GetEnvironmentVariable("PYTHONHOME", EnvironmentVariableTarget.Process);
 

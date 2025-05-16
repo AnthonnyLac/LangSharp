@@ -1,110 +1,88 @@
 ﻿using LangSharp.Core.Interfaces.Services;
 using LangSharp.Utils;
-using NuGet.Configuration;
 
 namespace LangSharp.Core.Services
 {
     public class PathLinuxService : IPathService
     {
+        private const string PythonVersion = "3.11";
+        private const string PythonDll = $"libpython{PythonVersion}.so.1.0";
+        private const string PythonBin = $"python{PythonVersion}";
+        private const string LibDir = "lib";
+        private const string SitePackages = "site-packages";
+        private const string VenvDir = "venv";
+        private const string NugetRoot = "root";
+        private const string NugetFolder = ".nuget";
+        private const string NugetPackages = "packages";
+        private const string ScriptsFolder = "Scripts";
+        private const string LangSharpFolder = "langsharp";
+
         public string GetNuggetPath()
         {
-            var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER", EnvironmentVariableTarget.Process);
-
-            if (!string.IsNullOrEmpty(isDocker) && bool.Parse(isDocker))
-            {
-                return Path.Combine(Path.DirectorySeparatorChar.ToString(), Environment.CurrentDirectory, "root", ".nuget", "packages");
-            }
-
-            ISettings settings = Settings.LoadDefaultSettings(null);
-            var nugetPath = SettingsUtility.GetGlobalPackagesFolder(settings);
-
-            return nugetPath;
+            return Path.Combine(Path.DirectorySeparatorChar.ToString(), Environment.CurrentDirectory, NugetRoot, NugetFolder, NugetPackages);
         }
+
         public string GetPythonDllPath()
         {
-            var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER", EnvironmentVariableTarget.Process);
-
-            if (!string.IsNullOrEmpty(isDocker) && bool.Parse(isDocker))
-            {
-                return Path.Combine(Path.DirectorySeparatorChar.ToString(), "usr", "lib", "x86_64-linux-gnu", "libpython3.11.so.1.0");
-            }
-
-            return Path.Combine(GetPythonPath(), EnvironmentConsts.DllVersionName);
+            return Path.Combine("/usr/lib/x86_64-linux-gnu", PythonDll);
         }
 
         public string GetPythonPath()
         {
-            return Path.Combine(Path.DirectorySeparatorChar.ToString(), "usr");
+            return "/usr";
         }
 
         public string GetPythonVenvPath()
         {
-            return Path.Combine(Path.DirectorySeparatorChar.ToString(), "usr");
+            return GetVenvPath();
         }
 
         public string GetPythonPathExecutable()
         {
             var isVenv = Environment.GetEnvironmentVariable("LANGSHARP_IS_VENV", EnvironmentVariableTarget.Process);
 
-            return !string.IsNullOrEmpty(isVenv) && bool.Parse(isVenv)
-                ? GetPythonPathExecutableForVenv(GetPythonVenvPath())
-                : GetPythonPathExecutableForStandardInstallation(GetPythonPath());
+            return !string.IsNullOrEmpty(isVenv) && bool.TryParse(isVenv, out var venv) && venv
+                ? Path.Combine(GetVenvPath(), "bin", PythonBin)
+                : Path.Combine(GetPythonPath(), "bin", PythonBin);
         }
 
         public string GetScriptsPath(string scriptName)
         {
-            return Path.Combine(AppContext.BaseDirectory, "Scripts", scriptName);
+            return Path.Combine(AppContext.BaseDirectory, ScriptsFolder, scriptName);
         }
 
         public string GetScriptsPathByPackageDir(string scriptName)
         {
             var nuggetPath = GetNuggetPath();
+            var version = EnvironmentConsts.GetLangSharpAssemblyVersion();
 
-            return Path.Combine(
-              Path.Combine(
-                  nuggetPath, "langsharp", EnvironmentConsts.GetLangSharpAssemblyVersion()
-              ),
-              "Scripts", scriptName);
+            return Path.Combine(nuggetPath, LangSharpFolder, version, ScriptsFolder, scriptName);
         }
 
         public string GetSitePackagesPath(string basePath)
         {
-            return Path.Combine(basePath, "lib", "python3.11", "site-packages");
+            return Path.Combine(basePath, LibDir, $"python{PythonVersion}", SitePackages);
         }
 
-        public string GetSitePackagesPathFromPythonHome()
+        public string GetSitePackagesPath()
         {
-            var pythonHome = Environment.GetEnvironmentVariable("PYTHONHOME", EnvironmentVariableTarget.Process);
+            var isVenv = Environment.GetEnvironmentVariable("LANGSHARP_IS_VENV", EnvironmentVariableTarget.Process);
 
-            if (string.IsNullOrEmpty(pythonHome))
-                return string.Empty;
-
-            return GetSitePackagesPath(pythonHome);
+            return !string.IsNullOrEmpty(isVenv) && bool.TryParse(isVenv, out var venv) && venv
+                ? GetSitePackagesPath(GetVenvPath())
+                : Path.Combine(GetPythonPath(), LibDir, $"python{PythonVersion}", SitePackages);
         }
 
         public string GetVenvPath()
         {
             var nuggetPath = GetNuggetPath();
 
-            return Path.Combine(
-                nuggetPath, "python", EnvironmentConsts.PythonVersion,
-                EnvironmentConsts.VirtualEnvironment);
+            return Path.Combine(nuggetPath, "python", PythonVersion, VenvDir);
         }
 
         public string GetDirectoryName(string? path)
         {
             return Path.GetDirectoryName(path) ?? string.Empty;
         }
-
-        private static string GetPythonPathExecutableForVenv(string pythonHome)
-        {
-            return Path.Combine(pythonHome, "bin", "python3.11");
-        }
-
-        private static string GetPythonPathExecutableForStandardInstallation(string pythonHome)
-        {
-            return Path.Combine(pythonHome, "bin", "python3.11");
-        }
-
     }
 }

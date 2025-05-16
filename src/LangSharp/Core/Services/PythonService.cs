@@ -50,7 +50,7 @@ namespace LangSharp.Core.Services
         public string ExecuteScript(AbstractScript scriptModel)
         {
             var pythonScriptPath = GetScriptPath(scriptModel.Name);
-            var pythonPackgesPath = _pathService.GetSitePackagesPathFromPythonHome();
+            var pythonPackgesPath = _pathService.GetSitePackagesPath();
 
             using (_pythonRuntime.AcquireGIL())
             {
@@ -127,51 +127,16 @@ namespace LangSharp.Core.Services
 
         public void CreateVirtualEnv()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                CreateVirtualEnvLinux();
-                return;
-            }
-
             string venvPath = _pathService.GetVenvPath();
             string pythonExecutable = _pathService.GetPythonPathExecutable();
 
 
             using (_pythonRuntime.AcquireGIL())
             {
-
                 dynamic subprocess = _pythonRuntime.Import("subprocess");
                 subprocess.check_call(new[] { pythonExecutable, "-m", "venv", venvPath});
             }
 
-        }
-
-        private void CreateVirtualEnvLinux() 
-        {
-            string venvPath = _pathService.GetVenvPath();
-            string pythonExecutable = _pathService.GetPythonPathExecutable();
-
-            var startInfo = new System.Diagnostics.ProcessStartInfo
-            {
-                FileName = pythonExecutable,
-                Arguments = $"-m venv \"{venvPath}\"",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-
-            using var process = System.Diagnostics.Process.Start(startInfo);
-
-            if (process == null)
-                throw new InvalidOperationException("Could not start the process to create the virtual environment.");
-
-            string output = process.StandardOutput.ReadToEnd();
-            string error = process.StandardError.ReadToEnd();
-            process.WaitForExit();
-
-            if (process.ExitCode != 0)
-                throw new Exception($"Error creating virtual environment: {error}\n{output}");
         }
 
         public bool IsVirtualEnvCreated()
