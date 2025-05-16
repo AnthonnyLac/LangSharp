@@ -2,6 +2,7 @@
 using LangSharp.Core.Interfaces.Infrastructure;
 using LangSharp.Core.Interfaces.Services;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 
 namespace LangSharp.Core.Services
 {
@@ -49,7 +50,7 @@ namespace LangSharp.Core.Services
         public string ExecuteScript(AbstractScript scriptModel)
         {
             var pythonScriptPath = GetScriptPath(scriptModel.Name);
-            var pythonPackgesPath = _pathService.GetSitePackagesPathFromPythonHome();
+            var pythonPackgesPath = _pathService.GetSitePackagesPath();
 
             using (_pythonRuntime.AcquireGIL())
             {
@@ -127,12 +128,15 @@ namespace LangSharp.Core.Services
         public void CreateVirtualEnv()
         {
             string venvPath = _pathService.GetVenvPath();
+            string pythonExecutable = _pathService.GetPythonPathExecutable();
+
 
             using (_pythonRuntime.AcquireGIL())
             {
                 dynamic subprocess = _pythonRuntime.Import("subprocess");
-                subprocess.check_call(new[] { "python", "-m", "venv", venvPath });
+                subprocess.check_call(new[] { pythonExecutable, "-m", "venv", venvPath});
             }
+
         }
 
         public bool IsVirtualEnvCreated()
@@ -142,10 +146,10 @@ namespace LangSharp.Core.Services
 
         public void ActivateVirtualEnv()
         {
-            var venvPath = _pathService.GetVenvPath();
+            var venvPath = _pathService.GetVenvPath(); 
             var sitePackagesPath = _pathService.GetSitePackagesPath(venvPath);
 
-            _env.ConfigurePythonEnvironment(venvPath, sitePackagesPath);
+            _env.ConfigurePythonVirtualEnvironment(sitePackagesPath, true);
         }
 
         public string GetScriptPath(string scriptName)
