@@ -10,7 +10,6 @@ namespace LangSharp.Core.Services
         private const string PythonBin = $"python{PythonVersion}";
         private const string LibDir = "lib";
         private const string SitePackages = "site-packages";
-        private const string VenvDir = "venv";
         private const string NugetRoot = "root";
         private const string NugetFolder = ".nuget";
         private const string NugetPackages = "packages";
@@ -77,7 +76,7 @@ namespace LangSharp.Core.Services
         {
             var nuggetPath = GetNuggetPath();
 
-            return Path.Combine(nuggetPath, "python", PythonVersion, VenvDir);
+            return Path.Combine(nuggetPath, "python", EnvironmentConsts.PythonVersion, EnvironmentConsts.VirtualEnvironment);
         }
 
         public string GetDirectoryName(string? path)
