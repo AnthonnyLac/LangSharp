@@ -16,9 +16,9 @@ namespace LangSharp.UnitTests.Core.Providers
                 .Setup(p => p.ExecuteScript(It.IsAny<QueryScriptModel>()))
                 .Returns("Query Result");
 
-            Environment.SetEnvironmentVariable("OPENAI_API_KEY", "test-api-key");
-            Environment.SetEnvironmentVariable("OPENAI_MODEL", "test-model");
-            Environment.SetEnvironmentVariable("OPENAI_DATABASE_URI", "test-db-uri");
+            Environment.SetEnvironmentVariable("LANGSHARP_API_KEY", "test-api-key");
+            Environment.SetEnvironmentVariable("LANGSHARP_MODEL", "test-model");
+            Environment.SetEnvironmentVariable("LANGSHARP_DATABASE_URI", "test-db-uri");
 
             var provider = new OpenAIProvider(pythonServiceMock.Object);
 
@@ -44,8 +44,8 @@ namespace LangSharp.UnitTests.Core.Providers
                 .Setup(p => p.ExecuteScript(It.IsAny<LLMScriptModel>()))
                 .Returns("Response Result");
 
-            Environment.SetEnvironmentVariable("OPENAI_API_KEY", "test-api-key");
-            Environment.SetEnvironmentVariable("OPENAI_MODEL", "test-model");
+            Environment.SetEnvironmentVariable("LANGSHARP_API_KEY", "test-api-key");
+            Environment.SetEnvironmentVariable("LANGSHARP_MODEL", "test-model");
 
             var provider = new OpenAIProvider(pythonServiceMock.Object);
 

@@ -7,9 +7,9 @@ namespace LangSharp.Core.Services
     {
         public void SetEnvironmentConfigs(LangSharpConfiguration configuration)
         {
-            Environment.SetEnvironmentVariable("OPENAI_API_KEY", configuration.ApiKey, EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("OPENAI_MODEL", configuration.Model, EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("OPENAI_DATABASE_URI", configuration.DatabaseUri, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("LANGSHARP_API_KEY", configuration.ApiKey, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("LANGSHARP_MODEL", configuration.Model, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("LANGSHARP_DATABASE_URI", configuration.DatabaseUri, EnvironmentVariableTarget.Process);
         }
 
     }

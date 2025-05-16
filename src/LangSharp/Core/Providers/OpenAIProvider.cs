@@ -16,9 +16,9 @@ namespace LangSharp.Core.Providers
 
         public string ExecuteDatabaseQuery(string query)
         {
-            string apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")!;
-            string model = Environment.GetEnvironmentVariable("OPENAI_MODEL")!;
-            string dbUri = Environment.GetEnvironmentVariable("OPENAI_DATABASE_URI")!;
+            string apiKey = Environment.GetEnvironmentVariable("LANGSHARP_API_KEY")!;
+            string model = Environment.GetEnvironmentVariable("LANGSHARP_MODEL")!;
+            string dbUri = Environment.GetEnvironmentVariable("LANGSHARP_DATABASE_URI")!;
 
             var scriptModel = new QueryScriptModel("LLMQuery.py", "LLMQuery", "CallOpenIAQueryLangSharp", [apiKey, query, model, dbUri]);
 
@@ -27,8 +27,8 @@ namespace LangSharp.Core.Providers
 
         public string GetResponse(string prompt)
         {
-            string apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")!;
-            string model = Environment.GetEnvironmentVariable("OPENAI_MODEL")!;
+            string apiKey = Environment.GetEnvironmentVariable("LANGSHARP_API_KEY")!;
+            string model = Environment.GetEnvironmentVariable("LANGSHARP_MODEL")!;
 
             var scriptModel = new LLMScriptModel("llm.py", "llm", "CallOpenIALangSharp", [apiKey, prompt, model]);
 

@@ -18,9 +18,9 @@ namespace LangSharp.Core.Handlers
 
         public override object Handle(object request)
         {
-            var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY", EnvironmentVariableTarget.Process);
-            var model = Environment.GetEnvironmentVariable("OPENAI_MODEL", EnvironmentVariableTarget.Process);
-            var databaseUri = Environment.GetEnvironmentVariable("OPENAI_DATABASE_URI", EnvironmentVariableTarget.Process);
+            var apiKey = Environment.GetEnvironmentVariable("LANGSHARP_API_KEY", EnvironmentVariableTarget.Process);
+            var model = Environment.GetEnvironmentVariable("LANGSHARP_MODEL", EnvironmentVariableTarget.Process);
+            var databaseUri = Environment.GetEnvironmentVariable("LANGSHARP_DATABASE_URI", EnvironmentVariableTarget.Process);
 
             if (!string.IsNullOrEmpty(apiKey) && !string.IsNullOrEmpty(model) && !string.IsNullOrEmpty(databaseUri))
                 return base.Handle(request);

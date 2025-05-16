@@ -12,9 +12,9 @@ namespace LangSharp.UnitTests.Core.Handlers
         public void Handle_ShouldNotCallSetEnvironmentConfigs_WhenEnvironmentVariablesAreSet()
         {
             // Arrange
-            Environment.SetEnvironmentVariable("OPENAI_API_KEY", "test-api-key", EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("OPENAI_MODEL", "test-model", EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("OPENAI_DATABASE_URI", "test-database-uri", EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("LANGSHARP_API_KEY", "test-api-key", EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("LANGSHARP_MODEL", "test-model", EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("LANGSHARP_DATABASE_URI", "test-database-uri", EnvironmentVariableTarget.Process);
 
             var configurationServiceMock = new Mock<IConfigurationService>();
             var configuration = new LangSharpConfiguration();
@@ -32,9 +32,9 @@ namespace LangSharp.UnitTests.Core.Handlers
         public void Handle_ShouldCallSetEnvironmentConfigs_WhenEnvironmentVariablesAreNotSet()
         {
             // Arrange
-            Environment.SetEnvironmentVariable("OPENAI_API_KEY", null, EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("OPENAI_MODEL", null, EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("OPENAI_DATABASE_URI", null, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("LANGSHARP_API_KEY", null, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("LANGSHARP_MODEL", null, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("LANGSHARP_DATABASE_URI", null, EnvironmentVariableTarget.Process);
 
             var configurationServiceMock = new Mock<IConfigurationService>();
             var configuration = new LangSharpConfiguration();
@@ -52,9 +52,9 @@ namespace LangSharp.UnitTests.Core.Handlers
         public void Handle_ShouldPassRequestToNextHandler_WhenEnvironmentVariablesAreSet()
         {
             // Arrange
-            Environment.SetEnvironmentVariable("OPENAI_API_KEY", "test-api-key", EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("OPENAI_MODEL", "test-model", EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("OPENAI_DATABASE_URI", "test-database-uri", EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("LANGSHARP_API_KEY", "test-api-key", EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("LANGSHARP_MODEL", "test-model", EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("LANGSHARP_DATABASE_URI", "test-database-uri", EnvironmentVariableTarget.Process);
 
             var configurationServiceMock = new Mock<IConfigurationService>();
             var configuration = new LangSharpConfiguration();

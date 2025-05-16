@@ -40,7 +40,7 @@ def main(args):
 
     api_key = (
         args.api_key
-        or os.getenv("OPENAI_API_KEY")
+        or os.getenv("LANGSHARP_API_KEY")
     )
     if not api_key:
         raise ValueError("No API key provided")

@@ -22,9 +22,9 @@ namespace LangSharp.UnitTests.Core.Services
             service.SetEnvironmentConfigs(configuration);
 
             // Assert
-            Assert.Equal("test-api-key", Environment.GetEnvironmentVariable("OPENAI_API_KEY", EnvironmentVariableTarget.Process));
-            Assert.Equal("test-model", Environment.GetEnvironmentVariable("OPENAI_MODEL", EnvironmentVariableTarget.Process));
-            Assert.Equal("test-database-uri", Environment.GetEnvironmentVariable("OPENAI_DATABASE_URI", EnvironmentVariableTarget.Process));
+            Assert.Equal("test-api-key", Environment.GetEnvironmentVariable("LANGSHARP_API_KEY", EnvironmentVariableTarget.Process));
+            Assert.Equal("test-model", Environment.GetEnvironmentVariable("LANGSHARP_MODEL", EnvironmentVariableTarget.Process));
+            Assert.Equal("test-database-uri", Environment.GetEnvironmentVariable("LANGSHARP_DATABASE_URI", EnvironmentVariableTarget.Process));
         }
     }
 }
