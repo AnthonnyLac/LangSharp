@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 var sdkConfiguration = new LangSharpConfigurationBuilder()
     .SetAIProvider(AIProviderType.OpenAI)
     .SetModel("gpt-4o-mini")
-    .SetApiKey(apiKey)
+    .SetApiKey("your-api-key")
     .SetDatabaseUri(default)
     .Build();
 
