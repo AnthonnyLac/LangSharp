@@ -1,8 +1,8 @@
 ﻿using LangSharp.Core.Abstractions;
+using LangSharp.Core.Interfaces.Infrastructure;
 using LangSharp.Core.Interfaces.Services;
-using LangSharp.Utils;
-using Python.Runtime;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 
 namespace LangSharp.Core.Services
 {
@@ -12,41 +12,53 @@ namespace LangSharp.Core.Services
     [ExcludeFromCodeCoverage]
     public class PythonService : IPythonService
     {
+        private readonly IPythonRuntime _pythonRuntime;
+        private readonly IEnvironmentService _env;
+        private readonly IPathService  _pathService;
+        private readonly IFileSystemService _fileSystemService;
+
+        public PythonService(IPythonRuntime pythonRuntime, IEnvironmentService env, IPathService pathService, IFileSystemService fileSystemService)
+        {
+            _pythonRuntime = pythonRuntime;
+            _env = env;
+            _pathService = pathService;
+            _fileSystemService = fileSystemService;
+        }
+
         public void InitializePythonEngine()
         {
-            if (PythonEngine.IsInitialized)
+            if (_pythonRuntime.IsInitialized)
                 return;
 
-            PythonEngine.Initialize();
-            PythonEngine.BeginAllowThreads();
+            _pythonRuntime.Initialize();
         }
 
         public void ConfigureEnvironmentPaths()
         {
-            var pythonHome = EnvironmentUtils.GetPythonPath();
+            var pythonHome = _pathService.GetPythonPath();
 
-            if (string.IsNullOrEmpty(pythonHome) || !Directory.Exists(pythonHome))
+            if (string.IsNullOrEmpty(pythonHome) || !_fileSystemService.IsValidDirectory(pythonHome))
                 throw new DirectoryNotFoundException($"Python directory not found: {pythonHome}");
 
-            var sitePackagesPath = EnvironmentUtils.GetSitePackagesPath(pythonHome);
-            var pythonDllPath = EnvironmentUtils.GetPythonDllPath();
+            var sitePackagesPath = _pathService.GetSitePackagesPath(pythonHome);
+            var pythonDllPath = _pathService.GetPythonDllPath();
 
-            Environment.SetEnvironmentVariable("PYTHONNET_PYDLL", pythonDllPath, EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("PYTHONHOME", pythonHome, EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("PYTHONPATH", sitePackagesPath, EnvironmentVariableTarget.Process);
+            _env.ConfigurePythonEnvironment(pythonHome, sitePackagesPath, pythonDllPath);
         }
 
 
         public string ExecuteScript(AbstractScript scriptModel)
         {
             var pythonScriptPath = GetScriptPath(scriptModel.Name);
+            var pythonPackgesPath = _pathService.GetSitePackagesPath();
 
-            using (Py.GIL())
+            using (_pythonRuntime.AcquireGIL())
             {
-                dynamic sys = Py.Import("sys");
-                sys.path.append(Path.GetDirectoryName(pythonScriptPath));
+                dynamic sys = _pythonRuntime.Import("sys");
+                sys.path.append(pythonPackgesPath);
+                sys.path.append(_pathService.GetDirectoryName(pythonScriptPath));
 
-                dynamic module = Py.Import(scriptModel.ModuleName);
+                dynamic module = _pythonRuntime.Import(scriptModel.ModuleName);
                 dynamic method = module.GetAttr(scriptModel.FunctionName);
                 dynamic result = scriptModel.ProcessMethod(method);
 
@@ -58,19 +70,15 @@ namespace LangSharp.Core.Services
         {
             try
             {
-                var pythonDllPath = EnvironmentUtils.GetPythonDllPath();
-                if (string.IsNullOrEmpty(pythonDllPath) || !File.Exists(pythonDllPath))
-                {
-                    Console.Error.WriteLine("Python DLL not found.");
-                    return false;
-                }
+                var pythonDllPath = _pathService.GetPythonDllPath();
+                if (string.IsNullOrEmpty(pythonDllPath) || !_fileSystemService.IsFileExist(pythonDllPath))
+                    throw new InvalidDataException("Python DLL not found.");
 
-                var pythonHome = EnvironmentUtils.GetPythonPath();
-                if (string.IsNullOrEmpty(pythonHome) || !Directory.Exists(pythonHome))
-                {
-                    Console.Error.WriteLine("Python directory not found.");
-                    return false;
-                }
+
+                var pythonHome = _pathService.GetPythonPath();
+                if (string.IsNullOrEmpty(pythonHome) || !_fileSystemService.IsValidDirectory(pythonHome))
+                    throw new InvalidDataException("Python directory not found.");
+
 
                 return true;
             }
@@ -80,19 +88,18 @@ namespace LangSharp.Core.Services
                 return false;
             }
         }
-  
+
 
         public void InstallPackage(string packageName)
         {
             if (IsPackageInstalled(packageName))
                 return;
 
-            string? pythonExecutable = EnvironmentUtils.GetPythonPathExecutable();
+            string? pythonExecutable = _pathService.GetPythonPathExecutable();
 
-            using (Py.GIL())
+            using (_pythonRuntime.AcquireGIL())
             {
-                dynamic subprocess = Py.Import("subprocess");
-
+                dynamic subprocess = _pythonRuntime.Import("subprocess");
 
                 subprocess.check_call(new[] { pythonExecutable, "-m", "pip", "install", packageName });
             }
@@ -100,11 +107,11 @@ namespace LangSharp.Core.Services
 
         public bool IsPackageInstalled(string packageName)
         {
-            string? pythonExecutable = EnvironmentUtils.GetPythonPathExecutable();
+            string? pythonExecutable = _pathService.GetPythonPathExecutable();
 
-            using (Py.GIL())
+            using (_pythonRuntime.AcquireGIL())
             {
-                dynamic subprocess = Py.Import("subprocess");
+                dynamic subprocess = _pythonRuntime.Import("subprocess");
 
                 try
                 {
@@ -118,47 +125,44 @@ namespace LangSharp.Core.Services
             }
         }
 
-
-
         public void CreateVirtualEnv()
         {
-            string venvPath = EnvironmentUtils.GetVenvPath();
+            string venvPath = _pathService.GetVenvPath();
+            string pythonExecutable = _pathService.GetPythonPathExecutable();
 
-            using (Py.GIL())
+
+            using (_pythonRuntime.AcquireGIL())
             {
-                dynamic subprocess = Py.Import("subprocess");
-                subprocess.check_call(new[] { "python", "-m", "venv", venvPath });
+                dynamic subprocess = _pythonRuntime.Import("subprocess");
+                subprocess.check_call(new[] { pythonExecutable, "-m", "venv", venvPath});
             }
 
         }
 
         public bool IsVirtualEnvCreated()
         {
-            return Directory.Exists(EnvironmentUtils.GetVenvPath());
+            return _fileSystemService.IsValidDirectory(_pathService.GetVenvPath());
         }
 
         public void ActivateVirtualEnv()
         {
-            var venvPath = EnvironmentUtils.GetVenvPath();
-            var sitePackagesPath = EnvironmentUtils.GetSitePackagesPath(venvPath);
+            var venvPath = _pathService.GetVenvPath(); 
+            var sitePackagesPath = _pathService.GetSitePackagesPath(venvPath);
 
-            Environment.SetEnvironmentVariable("PYTHONHOME", venvPath, EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("PYTHONPATH", sitePackagesPath, EnvironmentVariableTarget.Process);
+            _env.ConfigurePythonVirtualEnvironment(sitePackagesPath, true);
         }
 
         public string GetScriptPath(string scriptName)
         {
-            var scriptPath = EnvironmentUtils.GetScriptsPath(scriptName);
+            var scriptPath = _pathService.GetScriptsPath(scriptName);
 
-            if (!File.Exists(scriptPath))
-            {
-                scriptPath = EnvironmentUtils.GetScriptsPathByPackageDir(scriptName);
+            if (_fileSystemService.IsFileExist(scriptPath))
+                return scriptPath;
 
-                if (!File.Exists(scriptPath))
-                {
-                    throw new FileNotFoundException($"Script '{scriptName}' not found in any of the verified paths.");
-                }
-            }
+            scriptPath = _pathService.GetScriptsPathByPackageDir(scriptName);
+
+            if (!_fileSystemService.IsFileExist(scriptPath))
+                throw new FileNotFoundException($"Script '{scriptName}' not found in any of the verified paths.");
 
             return scriptPath;
         }

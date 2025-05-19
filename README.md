@@ -95,6 +95,28 @@ string aiResponse = await service.CallAIChatAsync("What is the weather like toda
 Console.WriteLine(aiResponse);
 ```
 
+## Running in Docker Containers
+
+To run the LangSharp SDK in a Docker container, ensure Python and required dependencies are properly configured. Below are examples for Linux and Windows containers.
+
+### Linux
+
+Install Python 3.11.x:
+
+```dockerfile
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER root
+WORKDIR /app
+
+# Install Python 3.11 and dependencies
+RUN apt update && \
+    apt install -y \
+    python3.11 \
+    python3-pip \
+    python3-venv \
+    && rm -rf /var/lib/apt/lists/*
+```
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
