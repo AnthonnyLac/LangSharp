@@ -361,4 +361,11 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/LangSharp.Out/myenv
+/LangSharp.Out/my
+
+# Environment
+.env
+/env
+
+# Database
+*.db
