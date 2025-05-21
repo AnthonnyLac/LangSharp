@@ -104,5 +104,9 @@ namespace LangSharp.Core.Services
             return Path.Combine(pythonHome, "python.exe");
         }
 
+        public string GetEmbeddedScriptsPath(string scriptName)
+        {
+            return Path.Combine(AppContext.BaseDirectory, scriptName);
+        }
     }
 }

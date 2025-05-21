@@ -8,6 +8,7 @@
         string GetPythonPathExecutable();
         string GetSitePackagesPath(string basePath);
         string GetVenvPath();
+        string GetEmbeddedScriptsPath(string scriptName);
         string GetScriptsPath(string scriptName);
         string GetScriptsPathByPackageDir(string scriptName);
         string GetSitePackagesPath();
