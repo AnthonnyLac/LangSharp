@@ -15,7 +15,7 @@
 		<PackageTags>python;dotnet;sdk;integration</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-		<Version>1.0.20</Version>
+		<Version>1.0.21</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
