@@ -78,7 +78,7 @@ To execute a database query using the LangSharp SDK, you can ask a question abou
 using LangSharp.Core.Interfaces.Services;
 
 var service = app.Services.GetService<ILangSharpService>();
-string queryResult = await service.ExecuteDatabaseQueryAsync("What are the names of all users in the users table?");
+string queryResult = await service.ExecuteDatabaseQuery("What are the names of all users in the users table?");
 Console.WriteLine(queryResult);
 
 ```
@@ -91,7 +91,7 @@ To call an AI cloud service using the LangSharp SDK:
 using LangSharp.Core.Interfaces.Services;
 
 var service = app.Services.GetService<ILangSharpService>();
-string aiResponse = await service.CallAIChatAsync("What is the weather like today?");
+string aiResponse = await service.CallAIChat("What is the weather like today?");
 Console.WriteLine(aiResponse);
 ```
 

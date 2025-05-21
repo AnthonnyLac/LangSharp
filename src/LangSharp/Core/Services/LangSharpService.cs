@@ -33,18 +33,18 @@ namespace LangSharp.Core.Services
             _handlerChain = requestValidatorHandler;
         }
 
-        public Task<object> CallAIChatAsync(string prompt)
+        public object CallAIChat(string prompt)
         {
             var result = _handlerChain.Handle(new CommandRequest(TypeCommand.GetResponse, prompt));
 
-            return Task.FromResult(result);
+            return result;
         }
 
-        public Task<object> ExecuteDatabaseQueryAsync(string query)
+        public object ExecuteDatabaseQuery(string query)
         {
             var result = _handlerChain.Handle(new CommandRequest(TypeCommand.ExecuteDatabaseQuery, query));
 
-            return Task.FromResult(result);
+            return result;
         }
     }
 }

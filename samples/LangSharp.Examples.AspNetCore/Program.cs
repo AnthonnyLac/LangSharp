@@ -24,5 +24,5 @@ var app = builder.Build();
 //Debugging the AI chat service
 var service = app.Services.GetService<ILangSharpService>();
 
-var result = await service!.CallAIChatAsync(Console.ReadLine() ?? string.Empty);
+var result = service!.CallAIChat(Console.ReadLine() ?? string.Empty);
 Console.WriteLine(result);
