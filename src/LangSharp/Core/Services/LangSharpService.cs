@@ -10,6 +10,7 @@ namespace LangSharp.Core.Services
     {
         private readonly IHandler _handlerChain;
 
+
         public LangSharpService(
              IRequestValidatorHandler requestValidatorHandler,
              IConfigurationSetupHandler configurationSetupHandler,

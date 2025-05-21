@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Building the SDK configuration using the LangSharpConfigurationBuilder
 var sdkConfiguration = new LangSharpConfigurationBuilder()
     .SetAIProvider(AIProviderType.OpenAI)
