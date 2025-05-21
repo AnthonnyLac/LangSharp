@@ -54,7 +54,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Building the SDK configuration using the LangSharpConfigurationBuilder
 var sdkConfiguration = new LangSharpConfigurationBuilder()
-    .SetAIProvider(AIProviderType.OpenAI)
+    .SetAIProvider(AIProviderType.LangChain)
     .SetModel("gpt-4o-mini")
     .SetApiKey("your-openai-api-key")
     .SetDatabaseUri("your-database-uri") // Optional

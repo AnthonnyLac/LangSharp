@@ -13,14 +13,14 @@ namespace LangSharp.UnitTests.Core.Configuration
 
             // Act
             var configuration = builder
-                .SetAIProvider(AIProviderType.OpenAI)
+                .SetAIProvider(AIProviderType.LangChain)
                 .SetApiKey("test-api-key")
                 .SetModel("test-model")
                 .SetDatabaseUri("test-database-uri")
                 .Build();
 
             // Assert
-            Assert.Equal(AIProviderType.OpenAI, configuration.AIProvider);
+            Assert.Equal(AIProviderType.LangChain, configuration.AIProvider);
             Assert.Equal("test-api-key", configuration.ApiKey);
             Assert.Equal("test-model", configuration.Model);
             Assert.Equal("test-database-uri", configuration.DatabaseUri);

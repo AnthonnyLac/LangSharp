@@ -3,6 +3,6 @@
     public enum AIProviderType
     {
         GoogleCloud,
-        OpenAI
+        LangChain
     }
 }
