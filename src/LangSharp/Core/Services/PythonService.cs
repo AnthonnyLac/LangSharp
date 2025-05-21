@@ -14,7 +14,7 @@ namespace LangSharp.Core.Services
     {
         private readonly IPythonRuntime _pythonRuntime;
         private readonly IEnvironmentService _env;
-        private readonly IPathService  _pathService;
+        private readonly IPathService _pathService;
         private readonly IFileSystemService _fileSystemService;
 
         public PythonService(IPythonRuntime pythonRuntime, IEnvironmentService env, IPathService pathService, IFileSystemService fileSystemService)
@@ -50,8 +50,10 @@ namespace LangSharp.Core.Services
         public string ExecuteScript(AbstractScript scriptModel)
         {
             var pythonScriptPath = GetScriptPath(scriptModel.Name);
+
             var pythonPackgesPath = _pathService.GetSitePackagesPath();
 
+            Console.ReadLine();
             using (_pythonRuntime.AcquireGIL())
             {
                 dynamic sys = _pythonRuntime.Import("sys");
@@ -134,7 +136,7 @@ namespace LangSharp.Core.Services
             using (_pythonRuntime.AcquireGIL())
             {
                 dynamic subprocess = _pythonRuntime.Import("subprocess");
-                subprocess.check_call(new[] { pythonExecutable, "-m", "venv", venvPath});
+                subprocess.check_call(new[] { pythonExecutable, "-m", "venv", venvPath });
             }
 
         }
@@ -146,7 +148,7 @@ namespace LangSharp.Core.Services
 
         public void ActivateVirtualEnv()
         {
-            var venvPath = _pathService.GetVenvPath(); 
+            var venvPath = _pathService.GetVenvPath();
             var sitePackagesPath = _pathService.GetSitePackagesPath(venvPath);
 
             _env.ConfigurePythonVirtualEnvironment(sitePackagesPath, true);
@@ -161,10 +163,20 @@ namespace LangSharp.Core.Services
 
             scriptPath = _pathService.GetScriptsPathByPackageDir(scriptName);
 
-            if (!_fileSystemService.IsFileExist(scriptPath))
-                throw new FileNotFoundException($"Script '{scriptName}' not found in any of the verified paths.");
+            if (_fileSystemService.IsFileExist(scriptPath))
+                return scriptPath;
 
-            return scriptPath;
+            scriptPath = _pathService.GetEmbeddedScriptsPath(scriptName);
+
+            if (_fileSystemService.IsFileExist(scriptPath))
+                return scriptPath;
+
+            scriptPath = _fileSystemService.WriteEmbeddedPythonScriptToProjectRoot(scriptName);
+
+            if (!string.IsNullOrEmpty(scriptPath) && _fileSystemService.IsFileExist(scriptPath))
+                return scriptPath;
+
+            throw new FileNotFoundException($"Script '{scriptName}' not found in any of the verified paths.");
         }
     }
 }

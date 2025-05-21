@@ -4,5 +4,6 @@
     {
         bool IsValidDirectory(string? path);
         bool IsFileExist(string? path);
+        string? WriteEmbeddedPythonScriptToProjectRoot(string scriptName);
     }
 }

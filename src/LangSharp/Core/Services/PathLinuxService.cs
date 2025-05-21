@@ -83,5 +83,10 @@ namespace LangSharp.Core.Services
         {
             return Path.GetDirectoryName(path) ?? string.Empty;
         }
+
+        public string GetEmbeddedScriptsPath(string scriptName)
+        {
+            return Path.Combine(AppContext.BaseDirectory, scriptName);
+        }
     }
 }
