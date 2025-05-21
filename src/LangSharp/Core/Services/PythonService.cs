@@ -50,10 +50,8 @@ namespace LangSharp.Core.Services
         public string ExecuteScript(AbstractScript scriptModel)
         {
             var pythonScriptPath = GetScriptPath(scriptModel.Name);
-
             var pythonPackgesPath = _pathService.GetSitePackagesPath();
 
-            Console.ReadLine();
             using (_pythonRuntime.AcquireGIL())
             {
                 dynamic sys = _pythonRuntime.Import("sys");
