@@ -64,7 +64,7 @@ namespace LangSharp.UnitTests.Core.Services
         }
 
         [Fact]
-        public async Task CallAIChatAsync_ShouldCallHandleOnCommandExecutionHandler()
+        public async Task CallAIChat_ShouldCallHandleOnCommandExecutionHandler()
         {
             // Arrange
             var prompt = "Hello, AI!";
@@ -74,7 +74,7 @@ namespace LangSharp.UnitTests.Core.Services
                 .Returns(expectedResponse);
 
             // Act
-            var result = await _langSharpService.CallAIChatAsync(prompt);
+            var result = _langSharpService.CallAIChat(prompt);
 
             // Assert
             _requestValidatorHandler.Verify(x => x.Handle(It.Is<CommandRequest>(r =>
@@ -82,7 +82,7 @@ namespace LangSharp.UnitTests.Core.Services
         }
 
         [Fact]
-        public async Task ExecuteDatabaseQueryAsync_ShouldCallHandleOnCommandExecutionHandler()
+        public async Task ExecuteDatabaseQuery_ShouldCallHandleOnCommandExecutionHandler()
         {
             // Arrange
             var query = "SELECT * FROM Users";
@@ -92,7 +92,7 @@ namespace LangSharp.UnitTests.Core.Services
                 .Returns(expectedResponse);
 
             // Act
-            var result = await _langSharpService.ExecuteDatabaseQueryAsync(query);
+            var result = _langSharpService.ExecuteDatabaseQuery(query);
 
             // Assert
             _requestValidatorHandler.Verify(x => x.Handle(It.Is<CommandRequest>(r =>

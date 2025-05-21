@@ -5,11 +5,11 @@ using LangSharp.Utils;
 
 namespace LangSharp.Core.Providers
 {
-    public class OpenAIProvider : ICloudAIProvider
+    public class LangChainProvider : ICloudAIProvider
     {
         private readonly IPythonService _pythonService;
 
-        public OpenAIProvider(IPythonService pythonService)
+        public LangChainProvider(IPythonService pythonService)
         {
             _pythonService = pythonService;
         }

@@ -12,7 +12,7 @@ namespace LangSharp.Core.Factorys
             return providerType switch
             {
                 AIProviderType.GoogleCloud => new GoogleCloudAIProvider(),
-                AIProviderType.OpenAI => new OpenAIProvider(pythonService),
+                AIProviderType.LangChain => new LangChainProvider(pythonService),
                 _ => throw new ArgumentException("Unknown AI provider", nameof(providerType)),
             };
         }

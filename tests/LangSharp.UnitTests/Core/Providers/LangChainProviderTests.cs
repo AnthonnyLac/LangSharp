@@ -5,7 +5,7 @@ using Moq;
 
 namespace LangSharp.UnitTests.Core.Providers
 {
-    public class OpenAIProviderTests
+    public class LangChainProviderTests
     {
         [Fact]
         public void ExecuteDatabaseQuery_ShouldCallExecuteScriptWithCorrectArguments()
@@ -20,7 +20,7 @@ namespace LangSharp.UnitTests.Core.Providers
             Environment.SetEnvironmentVariable("OPENAI_MODEL", "test-model");
             Environment.SetEnvironmentVariable("OPENAI_DATABASE_URI", "test-db-uri");
 
-            var provider = new OpenAIProvider(pythonServiceMock.Object);
+            var provider = new LangChainProvider(pythonServiceMock.Object);
 
             // Act
             var result = provider.ExecuteDatabaseQuery("SELECT * FROM Users");
@@ -47,7 +47,7 @@ namespace LangSharp.UnitTests.Core.Providers
             Environment.SetEnvironmentVariable("OPENAI_API_KEY", "test-api-key");
             Environment.SetEnvironmentVariable("OPENAI_MODEL", "test-model");
 
-            var provider = new OpenAIProvider(pythonServiceMock.Object);
+            var provider = new LangChainProvider(pythonServiceMock.Object);
 
             // Act
             var result = provider.GetResponse("Hello, OpenAI!");
@@ -68,7 +68,7 @@ namespace LangSharp.UnitTests.Core.Providers
             var pythonServiceMock = new Mock<IPythonService>();
             pythonServiceMock.Setup(p => p.InstallPackage(It.IsAny<string>()));
 
-            var provider = new OpenAIProvider(pythonServiceMock.Object);
+            var provider = new LangChainProvider(pythonServiceMock.Object);
 
             // Act
             var result = provider.InstallDependencies();
@@ -89,7 +89,7 @@ namespace LangSharp.UnitTests.Core.Providers
                 .Setup(p => p.InstallPackage(It.IsAny<string>()))
                 .Throws(new Exception("Installation failed"));
 
-            var provider = new OpenAIProvider(pythonServiceMock.Object);
+            var provider = new LangChainProvider(pythonServiceMock.Object);
 
             // Act
             var result = provider.InstallDependencies();

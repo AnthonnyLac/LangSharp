@@ -28,7 +28,7 @@ namespace LangSharp.UnitTests.MicrosoftExtensionsDI
             var services = new ServiceCollection();
             var configuration = new LangSharpConfiguration
             {
-                AIProvider = AIProviderType.OpenAI,
+                AIProvider = AIProviderType.LangChain,
                 ApiKey = "test-api-key",
                 Model = "test-model",
                 DatabaseUri = "test-database-uri"
@@ -51,7 +51,7 @@ namespace LangSharp.UnitTests.MicrosoftExtensionsDI
             var services = new ServiceCollection();
             var configuration = new LangSharpConfiguration
             {
-                AIProvider = AIProviderType.OpenAI,
+                AIProvider = AIProviderType.LangChain,
                 ApiKey = "test-api-key",
                 Model = "test-model",
                 DatabaseUri = "test-database-uri"

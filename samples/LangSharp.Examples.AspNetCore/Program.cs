@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Building the SDK configuration using the LangSharpConfigurationBuilder
 var sdkConfiguration = new LangSharpConfigurationBuilder()
-    .SetAIProvider(AIProviderType.OpenAI)
+    .SetAIProvider(AIProviderType.LangChain)
     .SetModel("gpt-4o-mini")
     .SetApiKey("your-api-key")
     .SetDatabaseUri(default)
@@ -24,5 +24,5 @@ var app = builder.Build();
 //Debugging the AI chat service
 var service = app.Services.GetService<ILangSharpService>();
 
-var result = await service!.CallAIChatAsync(Console.ReadLine() ?? string.Empty);
+var result = service!.CallAIChat(Console.ReadLine() ?? string.Empty);
 Console.WriteLine(result);

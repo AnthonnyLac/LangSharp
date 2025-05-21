@@ -26,14 +26,14 @@ namespace LangSharp.UnitTests.Core.Factorys
         public void CreateProvider_ShouldReturnOpenAIProvider_WhenProviderTypeIsOpenAI()
         {
             // Arrange
-            var providerType = AIProviderType.OpenAI;
+            var providerType = AIProviderType.LangChain;
             var pythonServiceMock = new Mock<IPythonService>();
 
             // Act
             var provider = CloudAIProviderFactory.CreateProvider(providerType, pythonServiceMock.Object);
 
             // Assert
-            Assert.IsType<OpenAIProvider>(provider);
+            Assert.IsType<LangChainProvider>(provider);
         }
 
         [Fact]
