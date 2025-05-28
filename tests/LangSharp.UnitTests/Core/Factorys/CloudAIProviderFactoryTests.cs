@@ -9,17 +9,17 @@ namespace LangSharp.UnitTests.Core.Factorys
     public class CloudAIProviderFactoryTests
     {
         [Fact]
-        public void CreateProvider_ShouldReturnGoogleCloudAIProvider_WhenProviderTypeIsGoogleCloud()
+        public void CreateProvider_ShouldThrowNotImplementedException_WhenProviderTypeIsGoogleCloud()
         {
             // Arrange
             var providerType = AIProviderType.GoogleCloud;
             var pythonServiceMock = new Mock<IPythonService>();
 
-            // Act
-            var provider = CloudAIProviderFactory.CreateProvider(providerType, pythonServiceMock.Object);
+            // Act & Assert
+            var exception = Assert.Throws<NotImplementedException>(() =>
+                CloudAIProviderFactory.CreateProvider(providerType, pythonServiceMock.Object));
 
-            // Assert
-            Assert.IsType<GoogleCloudAIProvider>(provider);
+            Assert.Equal("Google Cloud AI provider will be available in a future release.", exception.Message);
         }
 
         [Fact]

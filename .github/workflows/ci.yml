@@ -8,6 +8,7 @@ on:
     branches:
       - main
       - develop
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
@@ -18,5 +19,16 @@ jobs:
   test:
     uses: ./.github/workflows/tests.yml
     needs: build 
+    with:
+      configuration: Release
+
+  sonar:
+    if: |
+      github.ref == 'refs/heads/main' ||
+      (github.event_name == 'pull_request' && github.base_ref == 'main')
+    uses: ./.github/workflows/sonar.yml
+    needs: test
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     with:
       configuration: Release
