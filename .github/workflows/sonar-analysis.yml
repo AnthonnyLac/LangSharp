@@ -57,18 +57,17 @@ jobs:
         run: |
           echo "Esperando SonarQube ficar saudável..."
           for i in {1..60}; do
-            status=$(docker inspect --format='{{.State.Health.Status}}' $(docker ps -qf "name=sonarqube"))
-            echo "Status atual: $status"
-            if [ "$status" == "healthy" ]; then
-              echo "SonarQube está saudável!"
-              exit 0
-            fi
-            echo "Aguardando SonarQube..."
-            docker logs $(docker ps -qf "name=sonarqube") --tail 10
-            sleep 5
-          done
-          echo "Erro: SonarQube não ficou saudável após 5 minutos."
-          exit 1
+              status=$(curl -s http://localhost:9000/api/system/health | jq -r '.health')
+              echo "Status SonarQube: $status"
+              if [ "$status" == "GREEN" ]; then
+                echo "SonarQube está saudável!"
+                exit 0
+              fi
+              echo "Aguardando SonarQube..."
+              sleep 5
+            done
+            echo "Erro: SonarQube não ficou saudável após 5 minutos."
+            exit 1
 
       - name: Mostrar logs do SonarQube se falhou saúde
         if: failure() && steps.esperar-sonarqube.outcome == 'failure'
