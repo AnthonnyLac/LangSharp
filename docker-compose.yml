@@ -6,10 +6,10 @@ services:
     depends_on:
       - sonar_db
     healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:9000/api/system/health"]
-        interval: 10s
-        timeout: 5s
-        retries: 10
+      test: ["CMD-SHELL", "curl -s http://localhost:9000/api/system/health | grep -q '\"health\":\"GREEN\"'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     environment:
       SONAR_JDBC_URL: jdbc:postgresql://sonar_db:5432/sonar
       SONAR_JDBC_USERNAME: sonar
@@ -30,7 +30,6 @@ services:
       POSTGRES_PASSWORD: sonar
       POSTGRES_DB: sonar
     volumes:
-      - sonar_db:/var/lib/postgresql
       - sonar_db_data:/var/lib/postgresql/data
 
 volumes:
@@ -39,5 +38,4 @@ volumes:
   sonarqube_extensions:
   sonarqube_logs:
   sonarqube_temp:
-  sonar_db:
   sonar_db_data:

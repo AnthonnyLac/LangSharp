@@ -31,13 +31,26 @@ jobs:
         run: docker ps -a
 
       - name: Esperar SonarQube saudável
+        id: esperar-sonarqube
         run: |
-            echo "Esperando SonarQube ficar saudável..."
-            until [ "$(docker inspect --format='{{.State.Health.Status}}' langsharp-sonarqube-1)" == "healthy" ]; do
-              sleep 5
-              echo "Aguardando SonarQube..."
-            done
-            echo "SonarQube está saudável!"
+          echo "Esperando SonarQube ficar saudável..."
+          for i in {1..60}; do
+            status=$(docker inspect --format='{{.State.Health.Status}}' langsharp-sonarqube-1)
+            echo "Status atual: $status"
+            if [ "$status" == "healthy" ]; then
+              echo "SonarQube está saudável!"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Erro: SonarQube não ficou saudável após 5 minutos."
+          exit 1
+
+      - name: Mostrar logs do SonarQube se falhou saúde
+        if: failure() && steps.esperar-sonarqube.outcome == 'failure'
+        run: |
+          echo "==== Logs do container SonarQube (últimas 100 linhas) ===="
+          docker logs langsharp-sonarqube-1 --tail 100
 
       - name: Cache SonarQube scanner
         uses: actions/cache@v3
