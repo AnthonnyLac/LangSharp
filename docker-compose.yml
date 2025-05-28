@@ -5,11 +5,6 @@ services:
     image: sonarqube:lts-community
     depends_on:
       - sonar_db
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://0.0.0.0:9000/api/system/health || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 30
     environment:
       SONAR_JDBC_URL: jdbc:postgresql://sonar_db:5432/sonar
       SONAR_JDBC_USERNAME: sonar
@@ -21,7 +16,7 @@ services:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_extensions:/opt/sonarqube/extensions
       - sonarqube_logs:/opt/sonarqube/logs
-      - sonarqube_temp:/opt/sonarqube/temp
+      - sonarqube_temp:/opt/sonarqube/tempW
 
   sonar_db:
     image: postgres:13
@@ -30,6 +25,7 @@ services:
       POSTGRES_PASSWORD: sonar
       POSTGRES_DB: sonar
     volumes:
+      - sonar_db:/var/lib/postgresql
       - sonar_db_data:/var/lib/postgresql/data
 
 volumes:
@@ -38,4 +34,5 @@ volumes:
   sonarqube_extensions:
   sonarqube_logs:
   sonarqube_temp:
+  sonar_db:
   sonar_db_data:
