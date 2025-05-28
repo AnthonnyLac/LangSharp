@@ -1,10 +1,12 @@
 ﻿using LangSharp.Core.Interfaces.Services;
 using LangSharp.Core.Services;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace LangSharp.Core.Factorys
 {
-    public class PathServiceFactory
+    [ExcludeFromCodeCoverage]
+    public static class PathServiceFactory
     {
         public static IPathService CreateForCurrentEnvironment()
         {
