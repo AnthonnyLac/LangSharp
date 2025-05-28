@@ -30,6 +30,21 @@ jobs:
       - name: Listar containers
         run: docker ps -a
 
+      - name: Esperar banco Postgres ficar pronto
+        run: |
+          echo "Esperando banco Postgres..."
+          for i in {1..30}; do
+            # Tenta checar se o banco está pronto via pg_isready
+            if docker exec langsharp-sonarqube-1 sh -c "pg_isready -U sonar -h sonar_db" >/dev/null 2>&1; then
+              echo "Banco Postgres está pronto!"
+              exit 0
+            fi
+            echo "Banco ainda não está pronto. Tentativa $i/30..."
+            sleep 5
+          done
+          echo "Erro: Banco Postgres não ficou pronto após 2min30s."
+          exit 1
+
       - name: Esperar SonarQube saudável
         id: esperar-sonarqube
         run: |
@@ -41,6 +56,8 @@ jobs:
               echo "SonarQube está saudável!"
               exit 0
             fi
+            echo "Aguardando SonarQube..."
+            docker logs langsharp-sonarqube-1 --tail 10
             sleep 5
           done
           echo "Erro: SonarQube não ficou saudável após 5 minutos."
