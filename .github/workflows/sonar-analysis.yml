@@ -27,6 +27,9 @@ jobs:
       - name: Subir SonarQube
         run: docker compose up -d
 
+      - name: Listar containers
+        run: docker ps -a
+
       - name: Esperar SonarQube saudável
         run: |
             echo "Esperando SonarQube ficar saudável..."
