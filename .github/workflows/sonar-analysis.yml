@@ -55,17 +55,21 @@ jobs:
       - name: Esperar SonarQube saudável
         id: esperar-sonarqube
         run: |
-          echo "Esperando SonarQube ficar saudável..."
-          for i in {1..60}; do
-              status=$(curl -s http://localhost:9000/api/system/health | jq -r '.health')
-              echo "Status SonarQube: $status"
-              if [ "$status" == "GREEN" ]; then
+            echo "Esperando SonarQube ficar saudável..."
+            container_id=$(docker ps --filter "name=sonarqube" --format "{{.ID}}" | head -n 1)
+
+            for i in {1..60}; do
+              status=$(docker inspect --format='{{.State.Health.Status}}' $container_id)
+              echo "Status atual: $status"
+              if [ "$status" == "healthy" ]; then
                 echo "SonarQube está saudável!"
                 exit 0
               fi
               echo "Aguardando SonarQube..."
+              docker logs $container_id --tail 10
               sleep 5
             done
+
             echo "Erro: SonarQube não ficou saudável após 5 minutos."
             exit 1
 
