@@ -24,14 +24,17 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
 
-      - name: Setup Docker Compose
+      - name: Subir SonarQube
+        run: docker compose up -d
+
+      - name: Esperar SonarQube saudável
         run: |
-          docker compose up -d
-          echo "Esperando SonarQube subir..."
-          until curl -s http://localhost:9001/api/system/health | grep -q '"status":"UP"'; do
-            sleep 5
-            echo "Aguardando SonarQube..."
-          done
+            echo "Esperando SonarQube ficar saudável..."
+            until [ "$(docker inspect --format='{{.State.Health.Status}}' langsharp-sonarqube-1)" == "healthy" ]; do
+              sleep 5
+              echo "Aguardando SonarQube..."
+            done
+            echo "SonarQube está saudável!"
 
       - name: Cache SonarQube scanner
         uses: actions/cache@v3
