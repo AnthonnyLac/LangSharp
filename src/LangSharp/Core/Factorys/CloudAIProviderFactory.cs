@@ -11,7 +11,7 @@ namespace LangSharp.Core.Factorys
         {
             return providerType switch
             {
-                AIProviderType.GoogleCloud => new GoogleCloudAIProvider(),
+                AIProviderType.GoogleCloud => throw new NotImplementedException("Google Cloud AI provider will be available in a future release."),
                 AIProviderType.LangChain => new LangChainProvider(pythonService),
                 _ => throw new ArgumentException("Unknown AI provider", nameof(providerType)),
             };
