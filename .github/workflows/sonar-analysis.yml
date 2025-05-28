@@ -30,12 +30,19 @@ jobs:
       - name: Listar containers
         run: docker ps -a
 
+      - name: Logs Postgres (últimas 50 linhas)
+        run: docker logs $(docker ps -qf "name=sonar_db") --tail 50
+
+      - name: Logs SonarQube (últimas 50 linhas)
+        run: docker logs $(docker ps -qf "name=sonarqube") --tail 50
+
       - name: Esperar banco Postgres ficar pronto
         run: |
           echo "Esperando banco Postgres..."
+          # Pega o nome da rede criada pelo docker compose
+          network=$(docker network ls --filter name=langsharp_default -q)
           for i in {1..30}; do
-            # Tenta checar se o banco está pronto via pg_isready
-            if docker exec langsharp-sonarqube-1 sh -c "pg_isready -U sonar -h sonar_db" >/dev/null 2>&1; then
+            if docker run --rm --network $network postgres:13 pg_isready -h sonar_db -p 5432 -U sonar >/dev/null 2>&1; then
               echo "Banco Postgres está pronto!"
               exit 0
             fi
@@ -50,14 +57,14 @@ jobs:
         run: |
           echo "Esperando SonarQube ficar saudável..."
           for i in {1..60}; do
-            status=$(docker inspect --format='{{.State.Health.Status}}' langsharp-sonarqube-1)
+            status=$(docker inspect --format='{{.State.Health.Status}}' $(docker ps -qf "name=sonarqube"))
             echo "Status atual: $status"
             if [ "$status" == "healthy" ]; then
               echo "SonarQube está saudável!"
               exit 0
             fi
             echo "Aguardando SonarQube..."
-            docker logs langsharp-sonarqube-1 --tail 10
+            docker logs $(docker ps -qf "name=sonarqube") --tail 10
             sleep 5
           done
           echo "Erro: SonarQube não ficou saudável após 5 minutos."
@@ -67,7 +74,7 @@ jobs:
         if: failure() && steps.esperar-sonarqube.outcome == 'failure'
         run: |
           echo "==== Logs do container SonarQube (últimas 100 linhas) ===="
-          docker logs langsharp-sonarqube-1 --tail 100
+          docker logs $(docker ps -qf "name=sonarqube") --tail 100
 
       - name: Cache SonarQube scanner
         uses: actions/cache@v3
