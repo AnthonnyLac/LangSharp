@@ -1,0 +1,57 @@
+name: Build and SonarQube Analysis
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-analyze:
+    name: Build and Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Setup Docker Compose
+        run: |
+          docker-compose -f sonar-compose.yml up -d
+          echo "Esperando SonarQube subir..."
+          until curl -s http://localhost:9001/api/system/health | grep -q '"status":"UP"'; do
+            sleep 5
+            echo "Aguardando SonarQube..."
+          done
+
+      - name: Cache SonarQube scanner
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+
+      - name: Install SonarQube scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/.sonar/scanner
+          dotnet tool install --tool-path ~/.sonar/scanner dotnet-sonarscanner
+
+      - name: Build and analyze
+        env:
+          SONAR_TOKEN: admin  
+        run: |
+          ~/.sonar/scanner/dotnet-sonarscanner begin /k:"teste" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url="http://localhost:9001"
+          dotnet build --configuration Release
+          ~/.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+
+      - name: Derrubar SonarQube
+        run: docker-compose -f sonar-compose.yml down -v
