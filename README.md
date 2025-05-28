@@ -45,7 +45,7 @@ Configure the LangSharp SDK using the builder pattern in your `Program.cs`:
 
 ```csharp
 using LangSharp.Core.Configuration;
-using LangSharp.Core.Enums;
+using LangSharp.Core.Enums; 
 using LangSharp.MicrosoftExtensionsDI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -57,7 +57,7 @@ var sdkConfiguration = new LangSharpConfigurationBuilder()
     .SetAIProvider(AIProviderType.LangChain)
     .SetModel("gpt-4o-mini")
     .SetApiKey("your-openai-api-key")
-    .SetDatabaseUri("your-database-uri")  // Optional
+    .SetDatabaseUri("your-database-uri") // Optional
     .Build();
 
 // Adding the services and the SDK configuration
