@@ -23,7 +23,9 @@ jobs:
       configuration: Release
 
   sonar:
-    if: github.ref == 'refs/heads/main'
+    if: |
+      github.ref == 'refs/heads/main' ||
+      (github.event_name == 'pull_request' && github.base_ref == 'main')
     uses: ./.github/workflows/sonar.yml
     needs: test
     secrets:
