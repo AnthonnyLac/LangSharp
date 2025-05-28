@@ -26,7 +26,7 @@ jobs:
 
       - name: Setup Docker Compose
         run: |
-          docker-compose -f sonar-compose.yml up -d
+          docker-compose up -d
           echo "Esperando SonarQube subir..."
           until curl -s http://localhost:9001/api/system/health | grep -q '"status":"UP"'; do
             sleep 5
@@ -55,4 +55,4 @@ jobs:
           ~/.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
 
       - name: Derrubar SonarQube
-        run: docker-compose -f sonar-compose.yml down -v
+        run: docker-compose down -v
