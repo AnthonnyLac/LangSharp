@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - develop
-      - Feature/sonar pipe
+      - feature/sonar-pipe
 
 jobs:
   build-and-analyze:
