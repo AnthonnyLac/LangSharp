@@ -57,7 +57,7 @@ var sdkConfiguration = new LangSharpConfigurationBuilder()
     .SetAIProvider(AIProviderType.LangChain)
     .SetModel("gpt-4o-mini")
     .SetApiKey("your-openai-api-key")
-    .SetDatabaseUri("your-database-uri") // Optional
+    .SetDatabaseUri("your-database-uri")  // Optional
     .Build();
 
 // Adding the services and the SDK configuration
