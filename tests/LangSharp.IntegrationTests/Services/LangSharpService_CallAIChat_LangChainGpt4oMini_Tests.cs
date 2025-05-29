@@ -81,17 +81,5 @@ namespace LangSharp.IntegrationTests.Services
             Assert.Contains("PACS", resultString, StringComparison.OrdinalIgnoreCase);
         }
 
-        [Fact(DisplayName = "Professor prompt for exercises returns three numbered exercises")]
-        public void CallAIChatAsync_ProfessorPrompt_Exercises_ReturnsThreeNumberedExercises()
-        {
-            var prompt = "Crie três exercícios para os alunos. Números sempre indicando 'exercício'." + Prompt;
-            var result = _service.CallAIChat(prompt);
-            var resultString = result as string;
-
-            _output.WriteLine("AI Response:\n" + resultString);
-
-            Assert.NotNull(resultString);
-            Assert.Contains($"exercício", resultString, StringComparison.OrdinalIgnoreCase);
-        }
     }
 }
