@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{62A18702
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangSharp.UnitTests", "tests\LangSharp.UnitTests\LangSharp.UnitTests.csproj", "{93E6989F-B24D-EC13-A125-FBC404FF580C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangSharp.IntegrationTests", "tests\LangSharp.IntegrationTests\LangSharp.IntegrationTests.csproj", "{44060084-D17A-47A2-BCB6-E35EC4905CDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{93E6989F-B24D-EC13-A125-FBC404FF580C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93E6989F-B24D-EC13-A125-FBC404FF580C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93E6989F-B24D-EC13-A125-FBC404FF580C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44060084-D17A-47A2-BCB6-E35EC4905CDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44060084-D17A-47A2-BCB6-E35EC4905CDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44060084-D17A-47A2-BCB6-E35EC4905CDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44060084-D17A-47A2-BCB6-E35EC4905CDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +47,7 @@ Global
 		{5DA14FBB-4F80-4CB0-9D34-1E80E2B430BC} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{AEF1A62D-B74D-1F64-ED7F-A80AB81D4190} = {CCB10AAD-E064-4817-8AF3-29F22B4E19CF}
 		{93E6989F-B24D-EC13-A125-FBC404FF580C} = {62A18702-E2EE-4F35-B0B8-C75573DA08C5}
+		{44060084-D17A-47A2-BCB6-E35EC4905CDA} = {62A18702-E2EE-4F35-B0B8-C75573DA08C5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F11B4EC-1B39-44AC-8898-1DA920C3561A}
