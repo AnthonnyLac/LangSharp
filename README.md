@@ -30,7 +30,7 @@ LangSharp SDK is designed to bridge the gap between .NET applications and Python
 1. **Install the LangSharp SDK**:
 
 ```shell
-   dotnet add package LangSharp.SDK
+   dotnet add package LangSharp
 ```
 
 ### Configuration
