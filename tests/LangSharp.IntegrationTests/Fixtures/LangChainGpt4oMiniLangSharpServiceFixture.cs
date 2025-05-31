@@ -7,6 +7,7 @@ namespace LangSharp.IntegrationTests.Fixtures
     {
         public LangChainGpt4oMiniLangSharpServiceFixture()
             : base(model: "gpt-4o-mini", provider: AIProviderType.LangChain) { }
+
     }
 
 }

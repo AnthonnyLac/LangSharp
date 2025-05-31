@@ -1,4 +1,5 @@
 from langchain.chat_models import init_chat_model
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 
 class ChatModel:
@@ -14,7 +15,20 @@ class ChatModel:
         self.model = model
         self.temperature = temperature
         self.api_key = api_key
-        self.model = init_chat_model(self.model, api_key=self.api_key, temperature=self.temperature)
+        if model.lower().startswith("gemini"):
+            self.model = ChatGoogleGenerativeAI(
+                model=model,
+                temperature=temperature,
+                google_api_key=api_key
+            )
+        else:
+            self.model = init_chat_model(
+                model,
+                api_key=api_key,
+                temperature=temperature
+            )
+
+
 
     def run(self, prompt: str) -> str:
         """

@@ -4,7 +4,7 @@ using Xunit.Abstractions;
 
 namespace LangSharp.IntegrationTests.Services
 {
-    public class LangSharpService_CallAIChat_LangChainGpt4oMini_Tests : IClassFixture<LangChainGpt4oMiniLangSharpServiceFixture>
+    public class LangSharpService_CallAIChat_LangChainGemini20Flash_Tests : IClassFixture<LangChainGemini20FlashLangSharpServiceFixture>
     {
         #region [Prompt]
         private const string Prompt = @"
@@ -38,8 +38,8 @@ namespace LangSharp.IntegrationTests.Services
 
         private readonly ILangSharpService _service;
         private readonly ITestOutputHelper _output;
-        public LangSharpService_CallAIChat_LangChainGpt4oMini_Tests(
-          LangChainGpt4oMiniLangSharpServiceFixture fixture,
+        public LangSharpService_CallAIChat_LangChainGemini20Flash_Tests(
+          LangChainGemini20FlashLangSharpServiceFixture fixture,
           ITestOutputHelper output)
         {
             _service = fixture.Service;
@@ -80,6 +80,5 @@ namespace LangSharp.IntegrationTests.Services
             Assert.Contains("RIS", resultString, StringComparison.OrdinalIgnoreCase);
             Assert.Contains("PACS", resultString, StringComparison.OrdinalIgnoreCase);
         }
-
     }
 }

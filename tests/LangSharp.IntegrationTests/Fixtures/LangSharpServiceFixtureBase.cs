@@ -14,7 +14,7 @@ namespace LangSharp.IntegrationTests.Fixtures
         {
             var services = new ServiceCollection();
 
-            apiKey ??=Environment.GetEnvironmentVariable("LANGSHARP_TEST_API_KEY");
+            apiKey ??= Environment.GetEnvironmentVariable("LANGSHARP_TEST_API_KEY");
             model ??= "gpt-4o-mini";
             provider ??= AIProviderType.LangChain;
 
