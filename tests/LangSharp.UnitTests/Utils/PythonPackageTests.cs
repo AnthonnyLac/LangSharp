@@ -27,5 +27,11 @@ namespace LangSharp.UnitTests.Utils
         {
             Assert.Equal("langchain-google-genai", PythonPackage.LangChainGoogleGenaiAI);
         }
+
+        [Fact]
+        public void LangChainGoogleVertexAI_ShouldBeCorrect()
+        {
+            Assert.Equal("langchain-google-vertexai", PythonPackage.LangChainGoogleVertexAI);
+        }
     }
 }
