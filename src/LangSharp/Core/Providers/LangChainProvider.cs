@@ -43,6 +43,7 @@ namespace LangSharp.Core.Providers
                 _pythonService.InstallPackage(PythonPackage.LangChainCommunity);
                 _pythonService.InstallPackage(PythonPackage.PythonDotEnv);
                 _pythonService.InstallPackage(PythonPackage.LangChainGoogleGenaiAI);
+                _pythonService.InstallPackage(PythonPackage.LangChainGoogleVertexAI);
 
                 return true;
             }
