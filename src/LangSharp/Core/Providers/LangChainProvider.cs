@@ -42,6 +42,7 @@ namespace LangSharp.Core.Providers
                 _pythonService.InstallPackage(PythonPackage.LangChainOpenai);
                 _pythonService.InstallPackage(PythonPackage.LangChainCommunity);
                 _pythonService.InstallPackage(PythonPackage.PythonDotEnv);
+                _pythonService.InstallPackage(PythonPackage.LangChainGoogleGenaiAI);
 
                 return true;
             }
