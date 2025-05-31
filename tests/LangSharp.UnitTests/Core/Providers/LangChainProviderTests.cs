@@ -78,6 +78,8 @@ namespace LangSharp.UnitTests.Core.Providers
             pythonServiceMock.Verify(p => p.InstallPackage("langchain-openai"), Times.Once);
             pythonServiceMock.Verify(p => p.InstallPackage("langchain-community"), Times.Once);
             pythonServiceMock.Verify(p => p.InstallPackage("python-dotenv"), Times.Once);
+            pythonServiceMock.Verify(p => p.InstallPackage("langchain-google-genai"), Times.Once);
+            pythonServiceMock.Verify(p => p.InstallPackage("langchain-google-vertexai"), Times.Once); 
         }
 
         [Fact]

@@ -7,7 +7,6 @@ LangSharp SDK is a .NET 8 library that leverages Python.NET to communicate with 
 - [Introduction](#introduction)
 - [Features](#features)
 - [Getting Started](#getting-started)
-  - [Requisites] (#requisites)
   - [Installation](#installation)
   - [Configuration](#configuration)
 - [Usage](#usage)
@@ -25,17 +24,13 @@ LangSharp SDK is designed to bridge the gap between .NET applications and Python
 
 ## Getting Started
 
-### Requisites
-
-Python.NET requires Python 3.11.7 to be installed in the system.
-
 
 ### Installation
 
 1. **Install the LangSharp SDK**:
 
 ```shell
-   dotnet add package LangSharp.SDK
+   dotnet add package LangSharp
 ```
 
 ### Configuration
@@ -101,7 +96,7 @@ To run the LangSharp SDK in a Docker container, ensure Python and required depen
 
 ### Linux
 
-Install Python 3.11.x:
+Install Python 3.11.7:
 
 ```dockerfile
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
